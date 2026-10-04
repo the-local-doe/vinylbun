@@ -132,11 +132,13 @@ function updateTracklist(table, tracklist, id_template) {
         trackNameDiv.oninput = () => {
             let [, side] = id_template.split("-");
             unit.sides[side].bands[i].title = trackNameDiv.innerText;
+            compressPressing();
         };
 
         trackWriterDiv.oninput = () => {
             let [, side] = id_template.split("-");
             unit.sides[side].bands[i].writer = trackWriterDiv.innerText;
+            compressPressing();
         };
 
         trackNameDiv.contentEditable = "plaintext-only";
