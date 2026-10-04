@@ -8,6 +8,8 @@ let vinylTrackGapElement = document.getElementById("vinyl-track-gap");
 let vinylPitchElement = document.getElementById("vinyl-pitch");
 let vinylColorElement = document.getElementById("vinyl-color");
 let vinylLabelColorElement = document.getElementById("vinyl-label-color");
+let vinylSideOneLengthElement = document.getElementById("tracklist-side-one-length");
+let vinylSideTwoLengthElement = document.getElementById("tracklist-side-two-length");
 let recommendedPitchElement = document.getElementById("recommended-pitch");
 
 const canvas = document.getElementById("pressing");
@@ -35,7 +37,6 @@ let defaultPressing = {
             groovePitch: 95,
         },
         sides: [{
-            time: 1493,
             bands: [{
                 title: "Come Together",
                 writer: "Lennon",
@@ -62,7 +63,6 @@ let defaultPressing = {
                 time: 467
             }]
         }, {
-            time: 1331,
             bands: [{
                 title: "Here Comes The Sun",
                 writer: "Harrison",
@@ -249,7 +249,7 @@ function updatePressing() {
             // draw both sides
             for (let sideNumber = 0; sideNumber < 2; sideNumber++) {
                 let currentSide = unit.sides[sideNumber];
-                currentSide.time = 0;
+                let currentTime = 0;
 
                 // universal = things that can be different on both sides
                 if (!unit.universal) unit.universal = {};
@@ -325,7 +325,7 @@ function updatePressing() {
                 let lathePosition = bandStart;
                 for (let band of currentSide.bands) {
                     let bandWidth = band.time / 60 * rpm * groovePitch / 25400;
-                    currentSide.time += band.time;
+                    currentTime += band.time;
 
                     ctx.beginPath();
                     ctx.fillStyle = "rgba(0, 0, 0, 0.4)";
@@ -365,7 +365,13 @@ function updatePressing() {
                 ctx.stroke();
 
                 // side pitches
-                lowestPitch = Math.min(lowestPitch, (bandStart - bandEnd - trackGap / 25.4 * (currentSide.bands.length - 1)) / (currentSide.time / 60 * rpm) * 25400);
+                lowestPitch = Math.min(lowestPitch, (bandStart - bandEnd - trackGap / 25.4 * (currentSide.bands.length - 1)) / (currentTime / 60 * rpm) * 25400);
+
+                let sideMinutes = currentTime / 60 | 0;
+                let sideSeconds = (currentTime % 60 + "").padStart(2, 0);
+
+                if (sideNumber == 0) vinylSideOneLengthElement.innerText = `${sideMinutes}:${sideSeconds}`;
+                if (sideNumber == 1) vinylSideTwoLengthElement.innerText = `${sideMinutes}:${sideSeconds}`;
             }
 
             recommendedPitchElement.innerText = (lowestPitch | 0) + " µm";
