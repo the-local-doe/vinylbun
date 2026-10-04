@@ -308,6 +308,15 @@ function updatePressing() {
                         bandStart = 4.5 + 7/16 - 3/16;
                         bandEnd = 1+7/8;
                         break;
+                    case "trimicron":
+                        recordSize = 5.5 + 7/16;
+                        holeSize = 7.5;
+
+                        rpm = 33+1/3;
+                        labelSize = 99;
+                        bandStart = 5.5 + 7/16 - 1/4;
+                        bandEnd = 2.15;
+                        break;
                 }
 
                 let offset = (recordSize + 0.1) * [-1, 1][sideNumber];

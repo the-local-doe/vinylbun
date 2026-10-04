@@ -32,8 +32,8 @@
             <option value="7” 45rpm">7” Single / EP</option>
             <option value="7” 33rpm">7” Jukebox</option>
             <option value="10” 78rpm">78rpm Shellac</option>
-            <!--option value="trimicron">Trimicron LP</option>
-            <option value="seeburg">9” Seeburg Jukebox</option-->
+            <option value="trimicron">Trimicron LP</option>
+            <!--option value="seeburg">9” Seeburg Jukebox</option-->
         </select>
         <br>
         <label for="vinyl-pitch">Pitch:</label>
@@ -50,47 +50,43 @@
 
         <hr>
 
-        <div>
-            <table class="tracklist">
-                <caption>Side One [<span id="tracklist-side-one-length"></span>]</caption>
-                <thead>
-                    <tr>
-                        <td colspan="4" id="tracklist-side-one-add-track" class="add-row">+</td>
-                    </tr>
-                    <th>No.</th>
-                    <th scope="col" width="100%">
-                        <div>
-                            <div>Title</div>
-                            <div class="track-artist">Writer</div>
-                        </div>
-                    </th>
-                    <th colspan="2">Length</th>
-                </thead>
-                <tbody id="tracklist-side-one" class="tracklist-body"></tbody>
-            </table>
-        </div>
+        <table class="tracklist">
+            <caption>Side One [<span id="tracklist-side-one-length"></span>]</caption>
+            <thead>
+                <tr>
+                    <td colspan="4" id="tracklist-side-one-add-track" class="add-row">+</td>
+                </tr>
+                <th>No.</th>
+                <th scope="col" width="100%">
+                    <div>
+                        <div>Title</div>
+                        <div class="track-artist">Writer</div>
+                    </div>
+                </th>
+                <th colspan="2">Length</th>
+            </thead>
+            <tbody id="tracklist-side-one" class="tracklist-body"></tbody>
+        </table>
 
         <hr>
 
-        <div>
-            <table class="tracklist">
-                <caption>Side Two [<span id="tracklist-side-two-length"></span>]</caption>
-                <thead>
-                    <tr>
-                        <td colspan="4" id="tracklist-side-two-add-track" class="add-row">+</td>
-                    </tr>
-                    <th>No.</th>
-                    <th scope="col" width="100%">
-                        <div>
-                            <div>Title</div>
-                            <div class="track-artist">Writer</div>
-                        </div>
-                    </th>
-                    <th colspan="2">Length</th>
-                </thead>
-                <tbody id="tracklist-side-two" class="tracklist-body"></tbody>
-            </table>
-        </div>
+        <table class="tracklist">
+            <caption>Side Two [<span id="tracklist-side-two-length"></span>]</caption>
+            <thead>
+                <tr>
+                    <td colspan="4" id="tracklist-side-two-add-track" class="add-row">+</td>
+                </tr>
+                <th>No.</th>
+                <th scope="col" width="100%">
+                    <div>
+                        <div>Title</div>
+                        <div class="track-artist">Writer</div>
+                    </div>
+                </th>
+                <th colspan="2">Length</th>
+            </thead>
+            <tbody id="tracklist-side-two" class="tracklist-body"></tbody>
+        </table>
     </div>
     <canvas id="pressing"></canvas>
     <script src="lz-string-1.4.4.js"></script> <!-- rotemdan.github.io -->
