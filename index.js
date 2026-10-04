@@ -178,7 +178,8 @@ function updateTracklist(table, tracklist, id_template) {
                 seconds = unit.sides[side].bands[i].time % 60;
             }
 
-            trackLengthTimeSpan.innerText = `${minutes}:${String(seconds).padStart(2, 0)}`;
+            let tempTime = minutes * 60 + seconds;
+            trackLengthTimeSpan.innerText = `${tempTime / 60 | 0}:${String(tempTime % 60).padStart(2, 0)}`;
 
             updatePressing();
         };
