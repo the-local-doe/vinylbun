@@ -1,0 +1,116 @@
+body {
+  height: 100vh;
+  margin: 0;
+  display: flex;
+  font-family: Helvetica;
+  overflow: hidden;
+}
+
+textarea {
+  resize: none;
+}
+
+hr {
+  border-color: #dad2c5;
+}
+
+#pressing {
+  background: white;
+  height: 100vh;
+  width: 100%;
+}
+
+#menu {
+  background: blue;
+  height: 100%;
+  border-radius: 5px;
+  display: flex;
+}
+
+#menu.open {
+}
+
+#menu.close {
+  left: -430px;
+}
+
+#collapse {
+  height: 100%;
+  background: #dad2c5;
+  width: 20px;
+  color: #ff1053;
+  text-align: center;
+  line-height: 100vh;
+}
+
+#menu-options-container {
+  width: 350px;
+  background: #ff1053;
+  color: #d5e5fc;
+  padding-left: 5px;
+  padding-top: 10px;
+  padding-right: 5px;
+  overflow-y: scroll;
+  flex-shrink: 0;
+}
+
+#release-title {
+  font-size: 25px;
+  font-weight: bold;
+}
+
+#comment {
+  width: 270px;
+  height: 70px;
+  margin-left: auto;
+  margin-right: auto;
+  display: block;
+  background: #dad2c5;
+  color: #ff1053;
+  font-weight: bold;
+}
+
+.track-artist {
+  font-size: 10px;
+}
+
+.tracklist-body tr:nth-child(2n-1) {
+  background: #6c6ea1;
+  color: #d5e5fc;
+}
+
+.tracklist-body tr:nth-child(2n) {
+  background: #66c7f4;
+  color: #6c6ea0;
+}
+
+.editable {
+	text-decoration: underline dotted;
+	cursor: pointer;
+}
+
+.delete-row, .add-row {
+  user-select: none;
+}
+
+.tracklist {
+  border: 2px #d5e5fc solid;
+  margin: 10px;
+}
+
+.tracklist caption {
+  font-weight: bold;
+  font-size: 25px;
+}
+
+.tracklist-body th {
+  padding: 5px;
+}
+
+.tracklist thead {
+    background: #DAD2C5;
+    color: #FF1053;
+    text-align: center;
+    font-weight: bold;
+}
+
