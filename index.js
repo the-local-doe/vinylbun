@@ -18,6 +18,99 @@ canvas.width = canvas.clientWidth * canvasScale;
 canvas.height = canvas.clientHeight * canvasScale;
 
 let backgroundColor = "#FFFFFF";
+let defaultPressing = {
+    releaseTitle: "Abbey Road",
+    releaseBy: "Album by The Beatles",
+    pressingBy: "The Local Doe",
+    releaseDate: "26 September 1969",
+    comment: "Abbey Road is the eleventh album by The Beatles. You already know what it is. This is the default pressing for PressBo!",
+    version: 0,
+    units: [{
+        type: "phonograph",
+        preset: "12” 33rpm",
+        vinylColor: "#999999",
+        universal: {
+            labelColor: "#abdbf4",
+            trackGap: 1,
+            groovePitch: 95,
+        },
+        sides: [{
+            time: 1493,
+            bands: [{
+                title: "Come Together",
+                writer: "Lennon",
+                time: 259
+            }, {
+                title: "Something",
+                writer: "Harrison",
+                time: 182
+            }, {
+                title: "Maxwell's Silver Hammer",
+                writer: "McCartney",
+                time: 207
+            }, {
+                title: "Oh! Darling",
+                writer: "McCartney",
+                time: 207
+            }, {
+                title: "Octopus's Garden",
+                writer: "Starr",
+                time: 171
+            }, {
+                title: "I Want You (She's So Heavy)",
+                writer: "Lennon",
+                time: 467
+            }]
+        }, {
+            time: 1331,
+            bands: [{
+                title: "Here Comes The Sun",
+                writer: "Harrison",
+                time: 185
+            }, {
+                title: "Because",
+                writer: "Lennon",
+                time: 165
+            }, {
+                title: "You Never Give Me Your Money",
+                writer: "McCartney",
+                time: 243
+            }, {
+                title: "Sun King",
+                writer: "Lennon",
+                time: 146
+            }, {
+                title: "Mean Mr. Mustard",
+                writer: "Lennon",
+                time: 66
+            }, {
+                title: "Polythene Pam",
+                writer: "Lennon",
+                time: 73
+            }, {
+                title: "She Came In Through The Bathroom Window",
+                writer: "McCartney",
+                time: 118
+            }, {
+                title: "Golden Slumbers",
+                writer: "McCartney",
+                time: 91
+            }, {
+                title: "Carry That Weight",
+                writer: "McCartney",
+                time: 96
+            }, {
+                title: "The End",
+                writer: "McCartney",
+                time: 125
+            }, {
+                title: "Her Majesty",
+                writer: "McCartney",
+                time: 23
+            }]
+        }]
+    }]
+};
 
 function updateTracklist(table, tracklist, id_template) {
     table.innerHTML = "";
@@ -116,102 +209,9 @@ function updateTracklist(table, tracklist, id_template) {
     }
 }
 
-let pressing = {
-    releaseTitle: "Abbey Road",
-    releaseBy: "Album by The Beatles",
-    pressingBy: "The Local Doe",
-    releaseDate: "26 September 1969",
-    comment: "Abbey Road is the eleventh album by The Beatles. You already know what it is. This is the default pressing for PressBo!",
-    version: 0,
-    units: [{
-        type: "phonograph",
-        preset: "12” 33rpm",
-        vinylColor: "#999999",
-        universal: {
-            labelColor: "#abdbf4",
-            trackGap: 1,
-            groovePitch: 95,
-        },
-        sides: [{
-            time: 1493,
-            bands: [{
-                title: "Come Together",
-                writer: "Lennon",
-                time: 259
-            }, {
-                title: "Something",
-                writer: "Harrison",
-                time: 182
-            }, {
-                title: "Maxwell's Silver Hammer",
-                writer: "McCartney",
-                time: 207
-            }, {
-                title: "Oh! Darling",
-                writer: "McCartney",
-                time: 207
-            }, {
-                title: "Octopus's Garden",
-                writer: "Starr",
-                time: 171
-            }, {
-                title: "I Want You (She's So Heavy)",
-                writer: "Lennon",
-                time: 467
-            }]
-        }, {
-            time: 1331,
-            bands: [{
-                title: "Here Comes The Sun",
-                writer: "Harrison",
-                time: 185
-            }, {
-                title: "Because",
-                writer: "Lennon",
-                time: 165
-            }, {
-                title: "You Never Give Me Your Money",
-                writer: "McCartney",
-                time: 243
-            }, {
-                title: "Sun King",
-                writer: "Lennon",
-                time: 146
-            }, {
-                title: "Mean Mr. Mustard",
-                writer: "Lennon",
-                time: 66
-            }, {
-                title: "Polythene Pam",
-                writer: "Lennon",
-                time: 73
-            }, {
-                title: "She Came In Through The Bathroom Window",
-                writer: "McCartney",
-                time: 118
-            }, {
-                title: "Golden Slumbers",
-                writer: "McCartney",
-                time: 91
-            }, {
-                title: "Carry That Weight",
-                writer: "McCartney",
-                time: 96
-            }, {
-                title: "The End",
-                writer: "McCartney",
-                time: 125
-            }, {
-                title: "Her Majesty",
-                writer: "McCartney",
-                time: 23
-            }]
-        }]
-    }]
-};
+let pressing = null;
 
 let zoom = 115;
-let unit = pressing.units[0];
 
 function updateHTML() {
     titleElement.innerText       = pressing.releaseTitle || "Unknown Album";
@@ -230,6 +230,8 @@ function updateHTML() {
 
     updateTracklist(sideOneTable, unit.sides[0].bands, "vinyl-0-");
     updateTracklist(sideTwoTable, unit.sides[1].bands, "vinyl-1-");
+
+    compressPressing();
 }
 
 function updatePressing() {
@@ -366,6 +368,23 @@ function updatePressing() {
             recommendedPitchElement.innerText = (lowestPitch | 0) + " µm";
             break;
     }
+
+    compressPressing();
+}
+
+function compressPressing() {
+    window.history.pushState(null, null, `?p=${LZString144.compressToEncodedURIComponent(JSON.stringify(pressing))}`);
+}
+
+function loadPressing() {
+    let query = LZString144.decompressFromEncodedURIComponent(window.location.search.split("?p=")[1]);
+    try {
+        pressing = JSON.parse(LZString144.decompressFromEncodedURIComponent(window.location.search.split("?p=")[1]));
+        if (pressing == null) pressing = defaultPressing;
+    } catch {
+        pressing = defaultPressing;
+        compressPressing();
+    }
 }
 
 function darken(color, amount) {
@@ -380,8 +399,10 @@ function darken(color, amount) {
     return "#" + r + g + b;
 }
 
-updatePressing();
-updateHTML();
+loadPressing();
+let unit = pressing.units[0];
+        updatePressing();
+        updateHTML();
 
 canvas.onwheel = (e) => {
     zoom -= event.deltaY / 32;
