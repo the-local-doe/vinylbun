@@ -508,7 +508,7 @@ window.onresize = (e) => {
 
 // Fill out HTML
 vinylPresetElement.oninput = () => {
-    unit.preset = vinylPresetElement.innerText;
+    unit.preset = vinylPresetElement.value;
     updatePressing();
 };
 
@@ -710,6 +710,7 @@ function setUnit(unitNumber) {
     updateUnits();
     updatePressing();
     updateHTML();
+    updateVinylPitchDescription()
 }
 
 addUnitElement.onclick = () => {
