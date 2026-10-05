@@ -13,6 +13,8 @@ let vinylSideTwoLengthElement = document.getElementById("tracklist-side-two-leng
 let recommendedPitchElement = document.getElementById("recommended-pitch");
 let unitsListElement = document.getElementById("units-list");
 let addUnitElement = document.getElementById("add-unit");
+let pressingHealthElement = document.getElementById("pressing-health");
+let pressingSoundsLikeElement = document.getElementById("pressing-sounds-like");
 
 const canvas = document.getElementById("pressing");
 const ctx = canvas.getContext("2d");
@@ -222,16 +224,16 @@ let pressing = null;
 let zoom = 125;
 
 function updateHTML() {
-    titleElement.innerText       = pressing.releaseTitle || "Unknown Album";
-    authorElement.innerText      = pressing.releaseBy || "Album by Unkown Artist";
-    dateElement.innerText        = pressing.releaseDate || "an unknown date";
-    pressElement.innerText       = pressing.pressingBy || "Unknown presser";
-    commentElement.value         = pressing.comment || "Hi evan";
-    vinylPitchElement.value      = unit.universal.groovePitch || 125;
-    vinylColorElement.value      = unit.vinylColor || "#999999";
-    vinylPresetElement.value     = unit.preset || "custom";
-    vinylTrackGapElement.value   = unit.universal.trackGap || 1;
-    vinylLabelColorElement.value = unit.universal.labelColor || "#F07474";
+    titleElement.innerText           = pressing.releaseTitle || "Unknown Album";
+    authorElement.innerText          = pressing.releaseBy || "Album by Unkown Artist";
+    dateElement.innerText            = pressing.releaseDate || "an unknown date";
+    pressElement.innerText           = pressing.pressingBy || "Unknown presser";
+    commentElement.value             = pressing.comment || "Hi evan";
+    vinylPitchElement.innerText      = unit.universal.groovePitch || 125;
+    vinylColorElement.innerText      = unit.vinylColor || "#999999";
+    vinylPresetElement.value         = unit.preset || "12” 33rpm";
+    vinylTrackGapElement.innerText   = unit.universal.trackGap || 1;
+    vinylLabelColorElement.innerText = unit.universal.labelColor || "#F07474";
 
     let sideOneTable = document.getElementById("tracklist-side-one");
     let sideTwoTable = document.getElementById("tracklist-side-two");
@@ -371,12 +373,19 @@ function updatePressing() {
                 ctx.stroke();
 
                 // draw hole in label (may complicate pressings with no label, that's future me's problem)
-                // look into clipping?
                 ctx.beginPath();
                 ctx.fillStyle = backgroundColor;
                 ctx.arc(canvas.width / 2 + offset * zoom, canvas.height / 2, holeSize * zoom / 25.4 / 2, 0, 2 * Math.PI);
                 ctx.fill();
                 ctx.stroke();
+
+                // remove white hole in the middle
+                ctx.save();
+                ctx.globalCompositeOperation = 'destination-out';
+                ctx.beginPath();
+                ctx.arc(canvas.width / 2 + offset * zoom, canvas.height / 2, holeSize * zoom / 25.4 / 2 - ctx.lineWidth / 2, 0, 2 * Math.PI);
+                ctx.fill();
+                ctx.restore();
 
                 // side pitches
                 lowestPitch = Math.min(lowestPitch, (bandStart - bandEnd - trackGap / 25.4 * (currentSide.bands.length - 1)) / (currentTime / 60 * rpm) * 25400);
@@ -388,7 +397,7 @@ function updatePressing() {
                 if (sideNumber == 1) vinylSideTwoLengthElement.innerText = `${sideMinutes}:${sideSeconds}`;
             }
 
-            recommendedPitchElement.innerText = (lowestPitch | 0) + " µm";
+            recommendedPitchElement.innerText = lowestPitch | 0;
             break;
     }
 
@@ -434,10 +443,7 @@ function updateUnits() {
         let unitEdit = document.createElement("th");
         unitEdit.className = "edit-unit";
         unitEdit.innerText = "✎";
-        unitEdit.onclick = () => {
-            currentUnit = i;
-            setUnit(i);
-        }
+        unitEdit.onclick = () => setUnit(i);
 
         let unitName = document.createElement("th");
         if (!unitObject.name) unitObject.name = "name ur unit. lol";
@@ -486,6 +492,7 @@ let unit = pressing.units[0];
 updateUnits();
 updatePressing();
 updateHTML();
+updateVinylPitchDescription();
 
 canvas.onwheel = (e) => {
     zoom -= event.deltaY / 32;
@@ -500,28 +507,174 @@ window.onresize = (e) => {
 };
 
 // Fill out HTML
+vinylPresetElement.oninput = () => {
+    unit.preset = vinylPresetElement.innerText;
+    updatePressing();
+};
+
+function updateVinylPitchDescription() {
+    pressingHealthElement.innerText = "";
+    pressingSoundsLikeElement.innerText = "";
+
+    if (unit.universal.groovePitch == 11037){
+        pressingHealthElement.innerText = "IM LEON AND I LIKE BALLS";
+        pressingSoundsLikeElement.href = "https://www.youtube.com/watch?v=KVcptglGlEY";
+        pressingSoundsLikeElement.innerText = "you touched your balls";
+    } else if (unit.universal.groovePitch == 2009){
+        pressingHealthElement.innerText = "Very panned sound quality";
+        pressingSoundsLikeElement.href = "https://www.youtube.com/watch?v=bztiAcsATyI";
+        pressingSoundsLikeElement.innerText = "they fucked up tbh";
+    } else if (unit.universal.groovePitch == 347){
+        pressingHealthElement.innerText = "Incredible sound quality";
+        pressingSoundsLikeElement.href = "https://www.youtube.com/watch?v=iubgXSsc_jU";
+        pressingSoundsLikeElement.innerText = "you need a break. Go take one.";
+    } else if (unit.universal.groovePitch >= 195) {
+        pressingHealthElement.innerText = "Very clear sound quality";
+        pressingSoundsLikeElement.href = "https://www.discogs.com/master/78439-The-Beach-Boys-Wild-Honey";
+        pressingSoundsLikeElement.innerText = "The Beach Boys / Wild Honey";
+    } else if (unit.universal.groovePitch >= 125) {
+        pressingHealthElement.innerText = "Standard sound quality";
+        pressingSoundsLikeElement.href = "https://www.discogs.com/master/23934-The-Beatles-Sgt-Peppers-Lonely-Hearts-Club-Band";
+        pressingSoundsLikeElement.innerText = "The Beatles / Sgt. Pepper";
+    } else if (unit.universal.groovePitch >= 120) {
+        pressingHealthElement.innerText = "Standard sound quality";
+        pressingSoundsLikeElement.href = "https://www.discogs.com/release/1110161-John-Lennon-Plastic-Ono-Band-John-Lennon-Plastic-Ono-Band";
+        pressingSoundsLikeElement.innerText = "John Lennon / Plastic Ono Band";
+    } else if (unit.universal.groovePitch >= 110) {
+        pressingHealthElement.innerText = "Standard sound quality";
+        pressingSoundsLikeElement.href = "https://www.discogs.com/release/2935158-Paul-McCartney-Press-To-Play";
+        pressingSoundsLikeElement.innerText = "Paul McCartney / Press To Play";
+    } else if (unit.universal.groovePitch >= 105) {
+        pressingHealthElement.innerText = "Standard sound quality";
+        pressingSoundsLikeElement.href = "https://www.discogs.com/release/611600-John-Lennon-Walls-And-Bridges";
+        pressingSoundsLikeElement.innerText = "John Lennon / Walls And Bridges";
+    } else if (unit.universal.groovePitch >= 100) {
+        pressingHealthElement.innerText = "Standard sound quality";
+        pressingSoundsLikeElement.href = "https://www.discogs.com/master/65554-The-Beatles-Yellow-Submarine-Songtrack";
+        pressingSoundsLikeElement.innerText = "The Beatles / Yellow Submarine Songtrack";
+    } else if (unit.universal.groovePitch >= 95) {
+        pressingHealthElement.innerText = "Slightly fuzzy sound quality";
+        pressingSoundsLikeElement.href = "https://www.discogs.com/master/46402-The-Beatles-The-Beatles";
+        pressingSoundsLikeElement.innerText = "The Beatles / White Album";
+    } else if (unit.universal.groovePitch >= 90) {
+        pressingHealthElement.innerText = "Slightly fuzzy sound quality";
+        pressingSoundsLikeElement.href = "https://www.discogs.com/release/3313556-The-Beatles-Past-Masters-Volumes-One-Two";
+        pressingSoundsLikeElement.innerText = "The Beatles / Past Masters";
+    } else if (unit.universal.groovePitch >= 85) {
+        pressingHealthElement.innerText = "Slightly fuzzy sound quality";
+        pressingSoundsLikeElement.href = "https://www.discogs.com/release/1411640-Wings-London-Town";
+        pressingSoundsLikeElement.innerText = "Wings / London Town";
+    } else if (unit.universal.groovePitch >= 80) {
+        pressingHealthElement.innerText = "Slightly fuzzy sound quality";
+        pressingSoundsLikeElement.href = "https://www.discogs.com/release/864772-The-Beatles-Anthology-3";
+        pressingSoundsLikeElement.innerText = "The Beatles / Anthology 3";
+    } else if (unit.universal.groovePitch >= 75) {
+        pressingHealthElement.innerText = "Compressed sound quality";
+        pressingSoundsLikeElement.href = "https://www.discogs.com/release/371466-Miles-Davis-Get-Up-With-It";
+        pressingSoundsLikeElement.innerText = "Miles Davis / Get Up With It";
+    } else if (unit.universal.groovePitch >= 70) {
+        pressingHealthElement.innerText = "Compressed sound quality";
+        pressingSoundsLikeElement.href = "https://www.discogs.com/release/421436-Def-Leppard-Hysteria";
+        pressingSoundsLikeElement.innerText = "Def Leppard / Hysteria";
+    } else if (unit.universal.groovePitch == 69) {
+        pressingHealthElement.innerText = "Nicely compressed sound quality";
+        pressingSoundsLikeElement.href = "http://www.discogs.com/master/110519-Karlheinz-Stockhausen-Stimmung";
+        pressingSoundsLikeElement.innerText = "Karlheinz Stockhausen / Stimmung";
+    } else if (unit.universal.groovePitch >= 65) {
+        pressingHealthElement.innerText = "Compressed sound quality";
+        pressingSoundsLikeElement.href = "http://www.discogs.com/master/110519-Karlheinz-Stockhausen-Stimmung";
+        pressingSoundsLikeElement.innerText = "Karlheinz Stockhausen / Stimmung";
+    } else if (unit.universal.groovePitch >= 60) {
+        pressingHealthElement.innerText = "Compressed sound quality";
+        pressingSoundsLikeElement.href = "https://www.discogs.com/master/962336-La-Monte-Young-Marian-ZazeelaTheatre-Of-Eternal-Music-Dream-House-7817";
+        pressingSoundsLikeElement.innerText = "The Theatre of Eternal Music / Dream House 78’16”";
+    } else if (unit.universal.groovePitch >= 55) {
+        pressingHealthElement.innerText = "Very compressed sound quality";
+        pressingSoundsLikeElement.href = "https://www.discogs.com/release/1364554-Meat-Loaf-Bat-Out-Of-Hell-II-Back-Into-Hell";
+        pressingSoundsLikeElement.innerText = "Meat Loaf - Bat Out Of Hell II: Back Into Hell";
+    } else if (unit.universal.groovePitch >= 50) {
+        pressingHealthElement.innerText = "Very compressed sound quality";
+        pressingSoundsLikeElement.href = "https://www.discogs.com/release/6943383-Mozart-Volume-1";
+        pressingSoundsLikeElement.innerText = "Trimicron - Mozart (Volume 1)";
+    } else if (unit.universal.groovePitch >= 45) {
+        pressingHealthElement.innerText = "Very compressed sound quality";
+        pressingSoundsLikeElement.href = "https://www.discogs.com/release/6864535-Beethoven-Beethoven-I-";
+        pressingSoundsLikeElement.innerText = "Trimicron - Beethoven (Volume 1)";
+    } else if (unit.universal.groovePitch >= 41) {
+        pressingHealthElement.innerText = "Very compressed sound quality";
+        pressingSoundsLikeElement.href = "https://www.discogs.com/release/2382820-J-S-Bach-Version-Int%C3%A9grale";
+        pressingSoundsLikeElement.innerText = "Trimicron - J. S. Bach";
+    } else if (unit.universal.groovePitch < 41) {
+        pressingHealthElement.innerText = "u cant press this. idiot. lol";
+        pressingSoundsLikeElement.href = "https://www.youtube.com/watch?v=bCI4wK2t7PY";
+        pressingSoundsLikeElement.innerText = "you need to sharpen your sticks";
+    } else if (vinylPitchElement.innerText.toLowerCase() == "dylan"){
+        pressingHealthElement.innerText = "what is wrong with you?";
+        pressingSoundsLikeElement.href = "https://discord.com/channels/732862527163203634/732862527632834602/1550524197317386310";
+        pressingSoundsLikeElement.innerText = "you're a bit sad";
+    } else {
+        pressingSoundsLikeElement.href = "https://www.discogs.com/release/3313556-The-Beatles-Past-Masters-Volumes-One-Two";
+        pressingSoundsLikeElement.innerText = "The Beatles / “Past Masters";
+        pressingHealthElement.innerText = "Sounds good";
+    }
+}
+
+vinylPitchElement.oninput = () => {
+    if (!isNaN(+vinylPitchElement.innerText)) {
+        unit.universal.groovePitch = +vinylPitchElement.innerText;
+        updatePressing();
+    }
+
+    updateVinylPitchDescription();
+};
+
+vinylPitchElement.onblur = () => {
+    // why 40? that's the stereo groove witch, muwhehehehehe!
+    if (unit.universal.groovePitch < 40) unit.universal.groovePitch = +recommendedPitchElement.innerText;
+    vinylPitchElement.innerText = unit.universal.groovePitch;
+    updatePressing();
+    updateVinylPitchDescription();
+};
+
+vinylPitchElement.onkeydown = (e) => {
+    if (e.key == "ArrowUp" || e.key == "ArrowDown" || e.key == "ArrowLeft" || e.key == "ArrowRight") {
+        unit.universal.groovePitch += [1, -1][+(e.key == "ArrowDown" || e.key == "ArrowLeft")];
+        unit.universal.groovePitch = Math.max(unit.universal.groovePitch, 40);
+        vinylPitchElement.innerText = unit.universal.groovePitch;
+        updatePressing();
+        updateVinylPitchDescription();
+    }
+};
+
+vinylTrackGapElement.oninput = () => {
+    if (!isNaN(+vinylTrackGapElement.innerText)) {
+        unit.universal.trackGap = +vinylTrackGapElement.innerText;
+        updatePressing();
+    }
+};
+
+vinylTrackGapElement.onblur = () => {
+    if (unit.universal.trackGap < 0) unit.universal.trackGap = 1;
+    vinylTrackGapElement.innerText = unit.universal.trackGap;
+    updatePressing();
+};
+
+vinylTrackGapElement.onkeydown = (e) => {
+    if (e.key == "ArrowUp" || e.key == "ArrowDown" || e.key == "ArrowLeft" || e.key == "ArrowRight") {
+        unit.universal.trackGap += [0.01, -0.01][+(e.key == "ArrowDown" || e.key == "ArrowLeft")];
+        unit.universal.trackGap = Math.max(Math.round(unit.universal.trackGap * 100) / 100, 0);
+        vinylTrackGapElement.innerText = unit.universal.trackGap;
+        updatePressing();
+    }
+};
+
 vinylColorElement.oninput = () => {
-    unit.vinylColor = vinylColorElement.value;
+    unit.vinylColor = vinylColorElement.innerText;
     updatePressing();
 };
 
 vinylLabelColorElement.oninput = () => {
-    unit.universal.labelColor = vinylLabelColorElement.value;
-    updatePressing();
-};
-
-vinylPitchElement.oninput = () => {
-    unit.universal.groovePitch = vinylPitchElement.value;
-    updatePressing();
-};
-
-vinylPresetElement.oninput = () => {
-    unit.preset = vinylPresetElement.value;
-    updatePressing();
-};
-
-vinylTrackGapElement.oninput = () => {
-    unit.universal.trackGap = vinylTrackGapElement.value;
+    unit.universal.labelColor = vinylLabelColorElement.innerText;
     updatePressing();
 };
 
@@ -551,6 +704,7 @@ dateElement.onblur = () => {
 };
 
 function setUnit(unitNumber) {
+    currentUnit = unitNumber;
     unit = pressing.units[unitNumber];
 
     updateUnits();
