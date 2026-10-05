@@ -446,7 +446,6 @@ function updateUnits() {
         unitName.className = "editable";
         unitName.spellcheck = false;
         unitName.oninput = () => {
-            console.log('guh')
             unitObject.name = unitName.innerText;
             compressPressing();
         };
@@ -468,8 +467,8 @@ function updateUnits() {
         unitDelete.innerText = "×";
         if (pressing.units.length > 1) {
             unitDelete.onclick = () => {
-                
                 pressing.units.splice(i, 1);
+                if (currentUnit > i || currentUnit == pressing.units.length) currentUnit--;
                 setUnit(Math.min(currentUnit, pressing.units.length - 1));
             }
         } else unitDelete.style = "cursor: not-allowed;";
