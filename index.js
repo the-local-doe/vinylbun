@@ -11,6 +11,8 @@ let vinylLabelColorElement = document.getElementById("vinyl-label-color");
 let vinylSideOneLengthElement = document.getElementById("tracklist-side-one-length");
 let vinylSideTwoLengthElement = document.getElementById("tracklist-side-two-length");
 let recommendedPitchElement = document.getElementById("recommended-pitch");
+let unitsListElement = document.getElementById("units-list");
+let addUnitElement = document.getElementById("add-unit");
 
 const canvas = document.getElementById("pressing");
 const ctx = canvas.getContext("2d");
@@ -28,6 +30,7 @@ let defaultPressing = {
     comment: "Abbey Road is the eleventh album by The Beatles. You already know what it is. This is the default pressing for PressBo!",
     version: 0,
     units: [{
+        name: "Abbey Road (2019 Remix)",
         type: "phonograph",
         preset: "12” 33rpm",
         vinylColor: "#999999",
@@ -58,7 +61,7 @@ let defaultPressing = {
                 writer: "Starr",
                 time: 171
             }, {
-                title: "I Want You (She's So Heavy)",
+                title: "I Want You\n(She's So Heavy)",
                 writer: "Lennon",
                 time: 467
             }]
@@ -149,7 +152,7 @@ function updateTracklist(table, tracklist, id_template) {
         trackNameDiv.className = "editable";
         trackWriterDiv.className = "track-artist editable";
 
-        trackNumberHeader.innerText = i + 1;
+        trackNumberHeader.innerText = i + 1 + ".";
 
         let trackLengthTimeSpan = document.createElement("span");
 
@@ -181,6 +184,7 @@ function updateTracklist(table, tracklist, id_template) {
             let tempTime = minutes * 60 + seconds;
             trackLengthTimeSpan.innerText = `${tempTime / 60 | 0}:${String(tempTime % 60).padStart(2, 0)}`;
 
+            updateUnits();
             updatePressing();
         };
 
@@ -197,6 +201,7 @@ function updateTracklist(table, tracklist, id_template) {
                 unit.sides[side].bands.splice(track, 1);
             }
 
+            updateUnits();
             updatePressing();
             updateHTML();
         };
@@ -214,7 +219,7 @@ function updateTracklist(table, tracklist, id_template) {
 
 let pressing = null;
 
-let zoom = 115;
+let zoom = 125;
 
 function updateHTML() {
     titleElement.innerText       = pressing.releaseTitle || "Unknown Album";
@@ -417,10 +422,71 @@ function darken(color, amount) {
     return "#" + r + g + b;
 }
 
+function updateUnits() {
+    unitsListElement.innerHTML = "";
+
+    for (let i = 0; i < pressing.units.length; i++) {
+        let unitObject = pressing.units[i];
+
+        let unitRow = document.createElement("tr");
+        if (currentUnit == i) unitRow.className = "current-unit";
+
+        let unitEdit = document.createElement("th");
+        unitEdit.className = "edit-unit";
+        unitEdit.innerText = "✎";
+        unitEdit.onclick = () => {
+            currentUnit = i;
+            setUnit(i);
+        }
+
+        let unitName = document.createElement("th");
+        if (!unitObject.name) unitObject.name = "name ur unit. lol";
+        unitName.innerText = unitObject.name;
+        unitName.contentEditable = "plaintext-only";
+        unitName.className = "editable";
+        unitName.spellcheck = false;
+        unitName.oninput = () => {
+            console.log('guh')
+            unitObject.name = unitName.innerText;
+            compressPressing();
+        };
+
+        let unitTime = document.createElement("th");
+
+        switch (unitObject.type) {
+            case "phonograph":
+                let sideOneLength = sideTwoLength = 0;
+                for (let band of unitObject.sides[0].bands) sideOneLength += band.time;
+                for (let band of unitObject.sides[1].bands) sideTwoLength += band.time;
+                let fullVinylTime = sideOneLength + sideTwoLength;
+                unitTime.innerText = `${fullVinylTime / 60 | 0}:${("" + fullVinylTime % 60).padStart(2, 0)}`;
+                break;
+        }
+
+        let unitDelete = document.createElement("th");
+        unitDelete.className = "delete-row";
+        unitDelete.innerText = "×";
+        if (pressing.units.length > 1) {
+            unitDelete.onclick = () => {
+                
+                pressing.units.splice(i, 1);
+                setUnit(Math.min(currentUnit, pressing.units.length - 1));
+            }
+        } else unitDelete.style = "cursor: not-allowed;";
+
+        unitRow.append(unitEdit, unitName, unitTime, unitDelete);
+        unitsListElement.append(unitRow);
+    }
+}
+
 loadPressing();
+
+let currentUnit = 0;
 let unit = pressing.units[0];
-        updatePressing();
-        updateHTML();
+
+updateUnits();
+updatePressing();
+updateHTML();
 
 canvas.onwheel = (e) => {
     zoom -= event.deltaY / 32;
@@ -485,6 +551,35 @@ dateElement.onblur = () => {
     updatePressing();
 };
 
+function setUnit(unitNumber) {
+    unit = pressing.units[unitNumber];
+
+    updateUnits();
+    updatePressing();
+    updateHTML();
+}
+
+addUnitElement.onclick = () => {
+    pressing.units.push({
+        name: "name ur unit. lol",
+        type: "phonograph",
+        preset: "12” 33rpm",
+        vinylColor: "#999999",
+        universal: {
+            labelColor: "#F07474",
+            trackGap: 1,
+            groovePitch: 125
+        },
+        sides: [{
+            bands: []
+        }, {
+            bands: []
+        }]
+    });
+
+    setUnit(pressing.units.length - 1);
+}
+
 document.getElementById("tracklist-side-one-add-track").onclick = (e) => {
     unit.sides[0].bands.push({
         title: "Snookeroo",
@@ -492,6 +587,7 @@ document.getElementById("tracklist-side-one-add-track").onclick = (e) => {
         time: 209
     });
 
+    updateUnits();
     updatePressing();
     updateHTML();
 }
@@ -503,6 +599,7 @@ document.getElementById("tracklist-side-two-add-track").onclick = (e) => {
         time: 209
     });
 
+    updateUnits();
     updatePressing();
     updateHTML();
 }

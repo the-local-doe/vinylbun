@@ -27,13 +27,6 @@ hr {
   display: flex;
 }
 
-#menu.open {
-}
-
-#menu.close {
-  left: -430px;
-}
-
 #collapse {
   height: 100%;
   background: #dad2c5;
@@ -89,8 +82,13 @@ hr {
 	cursor: pointer;
 }
 
-.delete-row, .add-row {
+.delete-row, .add-row, .edit-unit {
   user-select: none;
+}
+
+.current-unit {
+    background: #d5e5fc !important;
+    color: #ff1053 !important;
 }
 
 .tracklist {
@@ -113,4 +111,5 @@ hr {
     text-align: center;
     font-weight: bold;
 }
+
 
