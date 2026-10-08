@@ -117,3 +117,7 @@ hr {
 .table-small-text {
     font-size: 12px;
 }
+
+.collapse-all-but-first tr:not(:first-child) {
+    visibility: collapse;
+}

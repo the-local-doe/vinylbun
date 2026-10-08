@@ -31,12 +31,97 @@
                     <td colspan="4" id="add-unit" class="add-row">+</td>
                 </tr>
                 <th>Edit</th>
-                <th scope="col" width="100%">
-                    <div>Unit Name</div>
-                </th>
+                <th scope="col" width="100%">Unit Name</th>
                 <th colspan="2">Length</th>
             </thead>
             <tbody id="units-list" class="tracklist-body"></tbody>
+        </table>
+
+        <hr>
+
+        <table class="tracklist">
+            <caption>Format Variables</caption>
+            <thead>
+                <th>Variable</th>
+                <th scope="col" width="100%">Value</th>
+            </thead>
+            <tbody class="tracklist-body collapse-all-but-first" id="vinyl-variables">
+                <tr>
+                    <th>Preset</th>
+                    <th>
+                        <select name="vinyl-preset" id="vinyl-preset">
+                            <option disabled selected>&emsp;Have fun! (°v°)b</option>
+                            <option value="custom">Custom</option>
+                            <hr>
+                            <option disabled selected>&emsp;Standard Options</option>
+                            <option value="12” 33rpm">12” 33 RPM (Album)</option>
+                            <option value="12” 45rpm">12” 45 RPM (Album / Maxi-Single)</option>
+                            <option value="10” 33rpm">10” 33 RPM (EP / Dual Play)</option>
+                            <option value="7” 33rpm">7” 33 RPM (Jukebox)</option>
+                            <option value="7” 45rpm">7” 45 RPM (Single / EP)</option>
+                            <hr>
+                            <option disabled selected>&emsp;Depricated Options</option>
+                            <option value="16” 33rpm">16” 33 RPM (Transcription)</option>
+                            <option value="16” 33rpm is">16” 33 RPM (Inside Start)</option>
+                            <option value="12” 78rpm">12” 78 RPM (Shellac)</option>
+                            <option value="10” 78rpm">10” 78 RPM (Shellac)</option>
+                            <hr>
+                            <option disabled selected>&emsp;Non-Standard Options</option>
+                            <option value="10” 45rpm">10” 45 RPM (Single / EP)</option>
+                            <option value="trimicron">33ᐪ Triple Durée (Trimicron)</option>
+                            <option value="seeburg">Seeburg 1000</option>
+                        </select>
+                    </th>
+                </tr>
+                <tr>
+                    <th>Format Name</th>
+                    <th>
+                        <span spellcheck="false" contenteditable="plaintext-only" class="editable" id="vinyl-format-name"></span>
+                    </th>
+                </tr>
+                <tr>
+                    <th>Record Size</th>
+                    <th>
+                        <span spellcheck="false" contenteditable="plaintext-only" class="editable" id="vinyl-record-size"></span>”
+                    </th>
+                </tr>
+                <tr>
+                    <th>Hole Size</th>
+                    <th>
+                        <span spellcheck="false" contenteditable="plaintext-only" class="editable" id="vinyl-hole-size"></span>”
+                    </th>
+                </tr>
+                <tr>
+                    <th>RPM</th>
+                    <th>
+                        <span spellcheck="false" contenteditable="plaintext-only" class="editable" id="vinyl-rpm"></span>
+                    </th>
+                </tr>
+                <tr>
+                    <th>Music Outer Diameter</th>
+                    <th>
+                        <span spellcheck="false" contenteditable="plaintext-only" class="editable" id="vinyl-band-start"></span>”
+                    </th>
+                </tr>
+                <tr>
+                    <th>Music Inner Diameter</th>
+                    <th>
+                        <span spellcheck="false" contenteditable="plaintext-only" class="editable" id="vinyl-band-end"></span>”
+                    </th>
+                </tr>
+                <tr>
+                    <th>Label Size</th>
+                    <th>
+                        <span spellcheck="false" contenteditable="plaintext-only" class="editable" id="vinyl-label-size"></span> mm
+                    </th>
+                </tr>
+                <tr>
+                    <th>Inside Start</th>
+                    <th>
+                        <input type="checkbox" id="vinyl-inside-start"></input>
+                    </th>
+                </tr>
+            </tbody>
         </table>
 
         <hr>
@@ -48,21 +133,6 @@
                 <th scope="col" width="100%">Value</th>
             </thead>
             <tbody class="tracklist-body">
-                <tr>
-                    <th>Preset</th>
-                    <th>
-                        <select name="vinyl-preset" id="vinyl-preset">
-                            <option value="custom">Custom</option>
-                            <option value="12” 33rpm">12” Album</option>
-                            <option value="10” 33rpm">10” EP / Dual Play</option>
-                            <option value="7” 45rpm">7” Single / EP</option>
-                            <option value="7” 33rpm">7” Jukebox</option>
-                            <option value="10” 78rpm">78rpm Shellac</option>
-                            <option value="trimicron">Trimicron LP</option>
-                            <!--option value="seeburg">9” Seeburg Jukebox</option-->
-                        </select>
-                    </th>
-                </tr>
                 <tr>
                     <th>Pitch</th>
                     <th>
@@ -88,21 +158,12 @@
                     <th>Label Color</th>
                     <th spellcheck="false" contenteditable="plaintext-only" class="editable" id="vinyl-label-color">#999999</th>
                 </tr>
+                <tr>
+                    <th>Groove Colors</th>
+                    <th><input type="checkbox" id="vinyl-groove-colors"></input></th>
+                </tr>
             </tbody>
         </table>
-
-        <!--br>
-        <label for="vinyl-pitch">Pitch:</label>
-        <input type="number" name="vinyl-pitch">
-        <div>Recommended: <span id="recommended-pitch">200</span></div>
-        <label for="vinyl-track-gap">Gap:</label>
-        <input type="number" name="vinyl-track-gap" id="vinyl-track-gap" min="0" step="0.1">
-        <br>
-        <label for="label-color">Vinyl Color:</label>
-        <input type="text" name="vinyl-color">
-        <br>
-        <label for="vinyl-label-color">Label Color:</label>
-        <input type="text" name="vinyl-label-color" id="vinyl-label-color"-->
 
         <hr>
 

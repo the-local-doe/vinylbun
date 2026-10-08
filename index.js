@@ -15,6 +15,18 @@ let unitsListElement = document.getElementById("units-list");
 let addUnitElement = document.getElementById("add-unit");
 let pressingHealthElement = document.getElementById("pressing-health");
 let pressingSoundsLikeElement = document.getElementById("pressing-sounds-like");
+let vinylVariablesElement = document.getElementById("vinyl-variables");
+let vinylGrooveColorsElement = document.getElementById("vinyl-groove-colors");
+
+
+let vinylRecordSizeElement  = document.getElementById("vinyl-record-size");
+let vinylHoleSizeElement    = document.getElementById("vinyl-hole-size");
+let vinylRpmElement         = document.getElementById("vinyl-rpm");
+let vinylBandStartElement   = document.getElementById("vinyl-band-start");
+let vinylBandEndElement     = document.getElementById("vinyl-band-end");
+let vinylLabelSizeElement   = document.getElementById("vinyl-label-size");
+let vinylInsideStartElement = document.getElementById("vinyl-inside-start");
+let vinylFormatNameElement  = document.getElementById("vinyl-format-name");
 
 const canvas = document.getElementById("pressing");
 const ctx = canvas.getContext("2d");
@@ -25,97 +37,116 @@ canvas.height = canvas.clientHeight * canvasScale;
 
 let backgroundColor = "#FFFFFF";
 let defaultPressing = {
-    releaseTitle: "Abbey Road",
-    releaseBy: "Album by The Beatles",
-    pressingBy: "The Local Doe",
-    releaseDate: "26 September 1969",
-    comment: "Abbey Road is the eleventh album by The Beatles. You already know what it is. This is the default pressing for PressBo!",
-    version: 0,
-    units: [{
-        name: "Abbey Road (2019 Remix)",
-        type: "phonograph",
-        preset: "12” 33rpm",
-        vinylColor: "#999999",
-        universal: {
-            labelColor: "#abdbf4",
-            trackGap: 1,
-            groovePitch: 95,
+    "releaseTitle": "Abbey Road",
+    "releaseBy": "Album by The Beatles",
+    "pressingBy": "The Local Doe",
+    "releaseDate": "26 September 1969",
+    "comment": "Abbey Road is the eleventh album by The Beatles. You already know what it is. This is the default pressing for PressBo!",
+    "version": 1,
+    "units": [{
+        "name": "Abbey Road (2019 Remix)",
+        "type": "phonograph",
+        "preset": "12” 33rpm",
+        "vinylColor": "#999999",
+        "universal": {
+            "labelColor": "#abdbf4",
+            "trackGap": 1,
+            "groovePitch": 97
         },
-        sides: [{
-            bands: [{
-                title: "Come Together",
-                writer: "Lennon",
-                time: 259
-            }, {
-                title: "Something",
-                writer: "Harrison",
-                time: 182
-            }, {
-                title: "Maxwell's Silver Hammer",
-                writer: "McCartney",
-                time: 207
-            }, {
-                title: "Oh! Darling",
-                writer: "McCartney",
-                time: 207
-            }, {
-                title: "Octopus's Garden",
-                writer: "Starr",
-                time: 171
-            }, {
-                title: "I Want You\n(She's So Heavy)",
-                writer: "Lennon",
-                time: 467
-            }]
-        }, {
-            bands: [{
-                title: "Here Comes The Sun",
-                writer: "Harrison",
-                time: 185
-            }, {
-                title: "Because",
-                writer: "Lennon",
-                time: 165
-            }, {
-                title: "You Never Give Me Your Money",
-                writer: "McCartney",
-                time: 243
-            }, {
-                title: "Sun King",
-                writer: "Lennon",
-                time: 146
-            }, {
-                title: "Mean Mr. Mustard",
-                writer: "Lennon",
-                time: 66
-            }, {
-                title: "Polythene Pam",
-                writer: "Lennon",
-                time: 73
-            }, {
-                title: "She Came In Through The Bathroom Window",
-                writer: "McCartney",
-                time: 118
-            }, {
-                title: "Golden Slumbers",
-                writer: "McCartney",
-                time: 91
-            }, {
-                title: "Carry That Weight",
-                writer: "McCartney",
-                time: 96
-            }, {
-                title: "The End",
-                writer: "McCartney",
-                time: 125
-            }, {
-                title: "Her Majesty",
-                writer: "McCartney",
-                time: 23
-            }]
-        }]
+        "sides": [{
+                "bands": [{
+                        "title": "Come Together",
+                        "writer": "Lennon",
+                        "time": 259
+                    },
+                    {
+                        "title": "Something",
+                        "writer": "Harrison",
+                        "time": 182
+                    },
+                    {
+                        "title": "Maxwell's Silver Hammer",
+                        "writer": "McCartney",
+                        "time": 207
+                    },
+                    {
+                        "title": "Oh! Darling",
+                        "writer": "McCartney",
+                        "time": 207
+                    },
+                    {
+                        "title": "Octopus's Garden",
+                        "writer": "Starr",
+                        "time": 171
+                    },
+                    {
+                        "title": "I Want You\n(She's So Heavy)",
+                        "writer": "Lennon",
+                        "time": 467
+                    }
+                ]
+            },
+            {
+                "bands": [{
+                        "title": "Here Comes The Sun",
+                        "writer": "Harrison",
+                        "time": 185
+                    },
+                    {
+                        "title": "Because",
+                        "writer": "Lennon",
+                        "time": 165
+                    },
+                    {
+                        "title": "You Never Give Me Your Money",
+                        "writer": "McCartney",
+                        "time": 243
+                    },
+                    {
+                        "title": "Sun King",
+                        "writer": "Lennon",
+                        "time": 146
+                    },
+                    {
+                        "title": "Mean Mr. Mustard",
+                        "writer": "Lennon",
+                        "time": 66
+                    },
+                    {
+                        "title": "Polythene Pam",
+                        "writer": "Lennon",
+                        "time": 73
+                    },
+                    {
+                        "title": "She Came In Through The Bathroom Window",
+                        "writer": "McCartney",
+                        "time": 118
+                    },
+                    {
+                        "title": "Golden Slumbers",
+                        "writer": "McCartney",
+                        "time": 91
+                    },
+                    {
+                        "title": "Carry That Weight",
+                        "writer": "McCartney",
+                        "time": 96
+                    },
+                    {
+                        "title": "The End",
+                        "writer": "McCartney",
+                        "time": 125
+                    },
+                    {
+                        "title": "Her Majesty",
+                        "writer": "McCartney",
+                        "time": 23
+                    }
+                ]
+            }
+        ]
     }]
-};
+}
 
 function updateTracklist(table, tracklist, id_template) {
     table.innerHTML = "";
@@ -219,10 +250,6 @@ function updateTracklist(table, tracklist, id_template) {
     }
 }
 
-let pressing = null;
-
-let zoom = 125;
-
 function updateHTML() {
     titleElement.innerText           = pressing.releaseTitle || "Unknown Album";
     authorElement.innerText          = pressing.releaseBy || "Album by Unkown Artist";
@@ -232,8 +259,17 @@ function updateHTML() {
     vinylPitchElement.innerText      = unit.universal.groovePitch || 125;
     vinylColorElement.innerText      = unit.vinylColor || "#999999";
     vinylPresetElement.value         = unit.preset || "12” 33rpm";
-    vinylTrackGapElement.innerText   = unit.universal.trackGap || 1;
+    vinylTrackGapElement.innerText   = unit.universal.trackGap == undefined ? 1 : unit.universal.trackGap;
     vinylLabelColorElement.innerText = unit.universal.labelColor || "#F07474";
+
+    vinylRecordSizeElement.innerText = unit.recordSize;
+    vinylHoleSizeElement.innerText   = unit.holeSize;
+    vinylRpmElement.innerText        = unit.universal.rpm;
+    vinylBandStartElement.innerText  = unit.universal.bandStart;
+    vinylBandEndElement.innerText    = unit.universal.bandEnd;
+    vinylLabelSizeElement.innerText  = unit.universal.labelSize;
+    vinylInsideStartElement.checked  = unit.universal.insideStart;
+    vinylFormatNameElement.innerText = unit.formatName || "Name yr format d^∇^”)/";
 
     let sideOneTable = document.getElementById("tracklist-side-one");
     let sideTwoTable = document.getElementById("tracklist-side-two");
@@ -244,6 +280,181 @@ function updateHTML() {
     compressPressing();
 }
 
+function vinylPresetValues() {
+    let recordSize, holeSize, rpm, bandStart, bandEnd, labelSize, insideStart;
+
+    switch (unit.preset) {
+        // standard
+        case "12” 33rpm":
+            recordSize = 11.875;
+            holeSize = 0.286;
+
+            rpm = "33+1/3";
+
+            bandStart = 11.5;
+            bandEnd = 4.75;
+
+            labelSize = 99;
+            insideStart = false;
+            break;
+        case "12” 45rpm":
+            recordSize = 11.875;
+            holeSize = 0.286;
+
+            rpm = "45";
+
+            bandStart = 11.5;
+            bandEnd = 4.75;
+
+            labelSize = 99;
+            insideStart = false;
+            break;
+        case "10” 33rpm":
+            recordSize = 9.875;
+            holeSize = 0.286;
+
+            rpm = "33+1/3";
+
+            bandStart = 9.5;
+            bandEnd = 4.75;
+
+            labelSize = 99;
+            insideStart = false;
+            break;
+        case "7” 33rpm":
+            recordSize = 6.875;
+            holeSize = 0.286;
+
+            rpm = "33+1/3";
+
+            bandStart = 6.625;
+            bandEnd = 4.25;
+
+            labelSize = 90;
+            insideStart = false;
+            break;
+        case "7” 45rpm":
+            recordSize = 6.875;
+            holeSize = 1.504;
+
+            rpm = "45";
+
+            bandStart = 6.625;
+            bandEnd = 4.25;
+
+            labelSize = 90;
+            insideStart = false;
+            break;
+        case "12” 78rpm":
+            recordSize = 11.875;
+            holeSize = 0.286;
+
+            rpm = "3600 / 46";
+
+            bandStart = 11.5;
+            bandEnd = 3.75;
+
+            labelSize = 75;
+            insideStart = false;
+            break;
+        case "10” 78rpm":
+            recordSize = 9.875;
+            holeSize = 0.286;
+
+            rpm = "3600 / 46";
+
+            bandStart = 9.5;
+            bandEnd = 3.75;
+
+            labelSize = 75;
+            insideStart = false;
+            break;
+        // non-standard
+        case "10” 45rpm":
+            recordSize = 9.875;
+            holeSize = 0.286;
+
+            rpm = "45";
+
+            bandStart = 9.5;
+            bandEnd = 4.75;
+
+            labelSize = 99;
+            insideStart = false;
+            break;
+        case "trimicron":
+            recordSize = 11.875;
+            holeSize = 0.286;
+
+            rpm = "33+1/3";
+
+            bandStart = 11.5;
+            bandEnd = 4.25;
+
+            labelSize = 90;
+            insideStart = false;
+            break;
+        case "seeburg":
+            recordSize = 8.875;
+            holeSize = 2;
+
+            rpm = "16+2/3";
+
+            bandStart = 8.5;
+            bandEnd = 4.75;
+
+            labelSize = 99;
+            insideStart = false;
+            break;
+        case "16” 33rpm":
+            recordSize = 15.9375;
+            holeSize = 0.286;
+
+            rpm = "33+1/3";
+
+            bandStart = 15.5;
+            bandEnd = 7.5;
+
+            labelSize = 99;
+            insideStart = false;
+            break;
+        case "16” 33rpm is":
+            recordSize = 15.9375;
+            holeSize = 0.286;
+
+            rpm = "33+1/3";
+
+            bandStart = 15.5625;
+            bandEnd = 7.5;
+
+            labelSize = 99;
+            insideStart = true;
+            break;
+        case "custom":
+            recordSize = unit.recordSize;
+            holeSize = unit.holeSize;
+
+            rpm = unit.universal.rpm;
+
+            bandStart = unit.universal.bandStart;
+            bandEnd = unit.universal.bandEnd;
+
+            labelSize = unit.universal.labelSize;
+            insideStart = unit.universal.insideStart;
+            break;
+    }
+
+    return {
+        recordSize:  recordSize,
+        holeSize:    holeSize,
+        rpm:         rpm,
+        bandStart:   bandStart,
+        bandEnd:     bandEnd,
+        labelSize:   labelSize,
+        insideStart: insideStart
+    }
+}
+
 function updatePressing() {
     // clear canvas
     ctx.reset();
@@ -251,116 +462,112 @@ function updatePressing() {
     switch (unit.type) {
         case "phonograph":
             // non-universal = things that are the same on both sides
-            let recordSize, holeSize, lowestPitch = Infinity;
+            let recordSize, holeSize;
+            let lowestPitch = Infinity;
+
+            if (unit.preset == "custom") vinylVariablesElement.className = "tracklist-body";
+            else vinylVariablesElement.className = "tracklist-body collapse-all-but-first";
 
             // draw both sides
             for (let sideNumber = 0; sideNumber < 2; sideNumber++) {
                 let currentSide = unit.sides[sideNumber];
                 let currentTime = 0;
 
-                // universal = things that can be different on both sides
-                if (!unit.universal) unit.universal = {};
-                let groovePitch = currentSide.groovePitch || unit.universal.groovePitch;
-                let labelColor  = currentSide.labelColor  || unit.universal.labelColor;
-                let labelSize   = currentSide.labelSize   || unit.universal.labelSize;
-                let bandStart   = currentSide.bandStart   || unit.universal.bandStart;
-                let trackGap    = currentSide.trackGap    || unit.universal.trackGap;
-                let bandEnd     = currentSide.bandEnd     || unit.universal.bandEnd;
-                let rpm         = currentSide.rpm         || unit.universal.rpm;
+                // variables controlled by the user
+                let groovePitch = unit.universal.groovePitch;
+                let labelColor  = unit.universal.labelColor;
+                let trackGap    = unit.universal.trackGap;
 
-                // set-up defaults
-                switch (unit.preset) {
-                    case "12” 33rpm":
-                        recordSize = 5.5 + 7/16;
-                        holeSize = 7.5;
+                // variables controlled by the preset
+                let recordPresetValues = vinylPresetValues();
 
-                        rpm = 33+1/3;
-                        labelSize = 99;
-                        bandStart = 5.5 + 7/16 - 1/4;
-                        bandEnd = 2+3/8;
-                        break;
-                    case "10” 33rpm":
-                        recordSize = 4.5 + 7/16;
-                        holeSize = 7.5;
+                recordSize  = recordPresetValues.recordSize;
+                holeSize    = recordPresetValues.holeSize;
+                rpm         = recordPresetValues.rpm;
+                bandStart   = recordPresetValues.bandStart;
+                bandEnd     = recordPresetValues.bandEnd;
+                labelSize   = recordPresetValues.labelSize;
+                insideStart = recordPresetValues.insideStart;
 
-                        rpm = 33+1/3;
-                        labelSize = 99;
-                        bandStart = 4.5 + 7/16 - 3/16;
-                        bandEnd = 2+3/8;
-                        break;
-                    case "7” 45rpm":
-                        recordSize = 3 + 7/16;
-                        holeSize = 1.5 * 25.4;
+                if (rpm.includes("/") && rpm.includes("+")) {
+                    let [whole, fraction] = rpm.split("+");
+                    let [numerator, denominator] = fraction.split("/");
 
-                        rpm = 45;
-                        labelSize = 90;
-                        bandStart = 3 + 7/16 - 1/8;
-                        bandEnd = 2+1/8;
-                        break;
-                    case "7” 33rpm":
-                        recordSize = 3 + 7/16;
-                        holeSize = 1.5 * 25.4;
+                    // who let this be valid javascript!! \(“°Δ°)7
+                    // i demand to be taken to their leader!!!
+                    rpm = +whole + +numerator / +denominator;
+                } else if (rpm.includes("/")) {
+                    let [numerator, denominator] = rpm.split("/");
+                    rpm = +numerator / +denominator;
+                } else rpm = +rpm;
 
-                        rpm = 33;
-                        labelSize = 90;
-                        bandStart = 3 + 7/16 - 1/8;
-                        bandEnd = 2+1/8;
-                        break;
-                    case "10” 78rpm":
-                        recordSize = 4.5 + 7/16;
-                        holeSize = 7.5;
-
-                        rpm = 78;
-                        labelSize = 85;
-                        bandStart = 4.5 + 7/16 - 3/16;
-                        bandEnd = 1+7/8;
-                        break;
-                    case "trimicron":
-                        recordSize = 5.5 + 7/16;
-                        holeSize = 7.5;
-
-                        rpm = 33+1/3;
-                        labelSize = 99;
-                        bandStart = 5.5 + 7/16 - 1/4;
-                        bandEnd = 2.15;
-                        break;
-                }
-
-                let offset = (recordSize + 0.1) * [-1, 1][sideNumber];
+                // at some point, people will want to use this on mobile
+                // optimal format is Side One on top and Side Two on the bottom
+                // in the future, offsetY will be used in lieu of offsetX on mobile
+                let offsetX = (recordSize / 2 + 0.1) * [-1, 1][sideNumber];
+                let offsetY = 0;
 
                 // draw the record itself
                 ctx.fillStyle = unit.vinylColor;
                 ctx.strokeStyle = "#000000";
                 ctx.lineWidth = 2;
                 ctx.beginPath();
-                ctx.arc(canvas.width / 2 + offset * zoom, canvas.height / 2, recordSize * zoom, 0, 2 * Math.PI);
+                ctx.arc(canvas.width / 2 + offsetX * zoom, canvas.height / 2 + offsetY * zoom, Math.max(recordSize / 2 * zoom, 0), 0, 2 * Math.PI);
                 ctx.fill();
                 ctx.stroke();
 
+                // set-up start position for drawing
+                let lathePosition, bandList = currentSide.bands;
+                if (!insideStart) lathePosition = bandStart / 2;
+                else {
+                    // js canvas doesn't have layers, so in order to draw an inside-start record
+                    // i effectively have to draw the album backwards, starting from the end
+                    bandList = [...currentSide.bands].reverse();
+                    sideSize = (bandList.length - 1) * trackGap / 25.4;
+
+                    for (let band of bandList) sideSize += band.time / 60 * rpm * groovePitch / 25400;
+
+                    lathePosition = bandEnd / 2 + sideSize;
+                }
+
+                let bandColors = ["#c25c5c", "#c28f5c", "#c2c25c", "#5cc25c", "#5cc2c2", "#5c8fc2", "#5c5cc2", "#8f5cc2", "#c25cc2"];
+
                 // draw each band of the record
-                let lathePosition = bandStart;
-                for (let band of currentSide.bands) {
+                for (let i = 0; i < bandList.length; i++) {
+                    let band = bandList[i];
                     let bandWidth = band.time / 60 * rpm * groovePitch / 25400;
                     currentTime += band.time;
 
+                    let bandColor = bandColors[(insideStart ? bandList.length - 1 - i : i) % bandColors.length];
+
                     ctx.beginPath();
-                    ctx.fillStyle = "rgba(0, 0, 0, 0.4)";
-                    ctx.arc(canvas.width / 2 + offset * zoom, canvas.height / 2, Math.max(lathePosition * zoom, 0), 0, 2 * Math.PI);
+                    ctx.fillStyle = vinylGrooveColorsElement.checked ? bandColor : "rgba(0, 0, 0, 0.4)";
+                    ctx.arc(canvas.width / 2 + offsetX * zoom, canvas.height / 2 + offsetY * zoom, Math.max(lathePosition * zoom, 0), 0, 2 * Math.PI);
                     ctx.fill();
 
                     ctx.beginPath();
                     ctx.fillStyle = unit.vinylColor;
-                    ctx.arc(canvas.width / 2 + offset * zoom, canvas.height / 2, Math.max((lathePosition - bandWidth) * zoom, 0), 0, 2 * Math.PI);
+                    ctx.arc(canvas.width / 2 + offsetX * zoom, canvas.height / 2 + offsetY * zoom, Math.max((lathePosition - bandWidth) * zoom, 0), 0, 2 * Math.PI);
                     ctx.fill();
 
                     lathePosition -= bandWidth + trackGap / 25.4;
                 }
 
+                // draw start marker of LP
+                if (insideStart || bandList.length == 0) {
+                    ctx.beginPath();
+                    ctx.setLineDash([20, 10]);
+                    ctx.arc(canvas.width / 2 + offsetX * zoom, canvas.height / 2 + offsetY * zoom, Math.max(bandStart * zoom / 2, 0), 0, 2 * Math.PI);
+                    ctx.stroke();
+                }
+
                 // draw end marker of LP
-                ctx.beginPath();
-                ctx.setLineDash([20, 10]);
-                ctx.arc(canvas.width / 2 + offset * zoom, canvas.height / 2, bandEnd * zoom, 0, 2 * Math.PI);
-                ctx.stroke();
+                if (!insideStart || bandList.length == 0) {
+                    ctx.beginPath();
+                    ctx.setLineDash([20, 10]);
+                    ctx.arc(canvas.width / 2 + offsetX * zoom, canvas.height / 2 + offsetY * zoom, Math.max(bandEnd * zoom / 2, 0), 0, 2 * Math.PI);
+                    ctx.stroke();
+                }
 
                 // draw label
                 ctx.beginPath();
@@ -368,14 +575,14 @@ function updatePressing() {
                 ctx.lineWidth = 5;
                 ctx.fillStyle = labelColor;
                 ctx.strokeStyle = darken(labelColor, 0.8);
-                ctx.arc(canvas.width / 2 + offset * zoom, canvas.height / 2, labelSize * zoom / 25.4 / 2, 0, 2 * Math.PI);
+                ctx.arc(canvas.width / 2 + offsetX * zoom, canvas.height / 2 + offsetY * zoom, Math.max(labelSize * zoom / 25.4 / 2, 0), 0, 2 * Math.PI);
                 ctx.fill();
                 ctx.stroke();
 
                 // draw hole in label (may complicate pressings with no label, that's future me's problem)
                 ctx.beginPath();
                 ctx.fillStyle = backgroundColor;
-                ctx.arc(canvas.width / 2 + offset * zoom, canvas.height / 2, holeSize * zoom / 25.4 / 2, 0, 2 * Math.PI);
+                ctx.arc(canvas.width / 2 + offsetX * zoom, canvas.height / 2 + offsetY * zoom, Math.max(holeSize * zoom / 2, 0), 0, 2 * Math.PI);
                 ctx.fill();
                 ctx.stroke();
 
@@ -383,25 +590,35 @@ function updatePressing() {
                 ctx.save();
                 ctx.globalCompositeOperation = 'destination-out';
                 ctx.beginPath();
-                ctx.arc(canvas.width / 2 + offset * zoom, canvas.height / 2, holeSize * zoom / 25.4 / 2 - ctx.lineWidth / 2, 0, 2 * Math.PI);
+                ctx.arc(canvas.width / 2 + offsetX * zoom, canvas.height / 2 + offsetY * zoom, Math.max(holeSize * zoom / 2 - ctx.lineWidth / 2, 0), 0, 2 * Math.PI);
                 ctx.fill();
                 ctx.restore();
 
                 // side pitches
-                lowestPitch = Math.min(lowestPitch, (bandStart - bandEnd - trackGap / 25.4 * (currentSide.bands.length - 1)) / (currentTime / 60 * rpm) * 25400);
+                lowestPitch = Math.min(lowestPitch, (bandStart / 2 - bandEnd / 2 - trackGap / 25.4 * (currentSide.bands.length - 1)) / (currentTime / 60 * rpm) * 25400);
 
                 let sideMinutes = currentTime / 60 | 0;
                 let sideSeconds = (currentTime % 60 + "").padStart(2, 0);
 
                 if (sideNumber == 0) vinylSideOneLengthElement.innerText = `${sideMinutes}:${sideSeconds}`;
-                if (sideNumber == 1) vinylSideTwoLengthElement.innerText = `${sideMinutes}:${sideSeconds}`;
+                if (sideNumber == 1) {
+                    vinylSideTwoLengthElement.innerText = `${sideMinutes}:${sideSeconds}`;
+                    console.log(formatTime((bandStart / 2 - bandEnd / 2) / (groovePitch * rpm) * 25400 * 60));
+                }
             }
 
             recommendedPitchElement.innerText = lowestPitch | 0;
             break;
     }
 
+
     compressPressing();
+}
+
+function formatTime(x) {
+    let minutes = x / 60 | 0;
+    let seconds = x % 60 | 0;
+    return `${minutes}:${("" + seconds).padStart(2, 0)}`;
 }
 
 function compressPressing() {
@@ -413,6 +630,90 @@ function loadPressing() {
     try {
         pressing = JSON.parse(LZString144.decompressFromEncodedURIComponent(window.location.search.split("?p=")[1]));
         if (pressing == null) pressing = defaultPressing;
+
+        // updates from version 0:
+        //     all previous standards recalculated
+        if (pressing.version == 0) {
+            for (let unit of pressing.units) {
+                console.log(unit.preset);
+                switch (unit.preset) {
+                    case "12” 33rpm":
+                        unit.formatName = "12” 33RPM (version 0)";
+                        unit.recordSize = (5.5 + 7/16) * 2;
+                        unit.holeSize = 7.5 / 25.4;
+
+                        unit.universal.rpm = "33+1/3";
+                        unit.universal.labelSize = 99;
+                        unit.universal.bandStart = (5.5 + 7/16 - 1/4) * 2;
+                        unit.universal.bandEnd = (2+3/8) * 2;
+                        break;
+                    case "12” 45rpm":
+                        unit.formatName = "12” 45RPM (version 0)";
+                        unit.recordSize = (5.5 + 7/16) * 2;
+                        unit.holeSize = 7.5 / 25.4;
+
+                        unit.universal.rpm = "45";
+                        unit.universal.labelSize = 99;
+                        unit.universal.bandStart = (5.5 + 7/16 - 1/4) * 2;
+                        unit.universal.bandEnd = (2+3/8) * 2;
+                        break;
+                    case "10” 33rpm":
+                        unit.formatName = "10” 33RPM (version 0)";
+                        unit.recordSize = (4.5 + 7/16) * 2;
+                        unit.holeSize = 7.5 / 25.4;
+
+                        unit.universal.rpm = "33+1/3";
+                        unit.universal.labelSize = 99;
+                        unit.universal.bandStart = (4.5 + 7/16 - 3/16) * 2;
+                        unit.universal.bandEnd = (2+3/8) * 2;
+                        break;
+                    case "7” 45rpm":
+                        unit.formatName = "7” 45RPM (version 0)";
+                        unit.recordSize = (3 + 7/16) * 2;
+                        unit.holeSize = 1.5;
+
+                        unit.universal.rpm = "45";
+                        unit.universal.labelSize = 90;
+                        unit.universal.bandStart = (3 + 7/16 - 1/8) * 2;
+                        unit.universal.bandEnd = (2+1/8) * 2;
+                        break;
+                    case "7” 33rpm":
+                        unit.formatName = "7” 33RPM (version 0)";
+                        unit.recordSize = (3 + 7/16) * 2;
+                        unit.holeSize = 1.5;
+
+                        unit.universal.rpm = "33";
+                        unit.universal.labelSize = 90;
+                        unit.universal.bandStart = (3 + 7/16 - 1/8) * 2;
+                        unit.universal.bandEnd = (2+1/8) * 2;
+                        break;
+                    case "10” 78rpm":
+                        unit.formatName = "10” 78RPM (version 0)";
+                        unit.recordSize = (4.5 + 7/16) * 2;
+                        unit.holeSize = 7.5 / 25.4;
+
+                        unit.universal.rpm = "78";
+                        unit.universal.labelSize = 85;
+                        unit.universal.bandStart = (4.5 + 7/16 - 3/16) * 2;
+                        unit.universal.bandEnd = (1+7/8) * 2;
+                        break;
+                    case "trimicron":
+                        unit.formatName = "33ᐪ Triple Durée (version 0)";
+                        unit.recordSize = (5.5 + 7/16) * 2;
+                        unit.holeSize = 7.5 / 25.4;
+
+                        unit.universal.rpm = "33+1/3";
+                        unit.universal.labelSize = 99;
+                        unit.universal.bandStart = (5.5 + 7/16 - 1/4) * 2;
+                        unit.universal.bandEnd = (2.15) * 2;
+                        break;
+                }
+
+                unit.preset = "custom";
+            }
+
+            pressing.version = 1;
+        }
     } catch {
         pressing = defaultPressing;
         compressPressing();
@@ -484,18 +785,32 @@ function updateUnits() {
     }
 }
 
+
+let pressing = null;
+vinylGrooveColorsElement.checked = false;
+
 loadPressing();
 
 let currentUnit = 0;
 let unit = pressing.units[0];
 
+function setZoomBasedOnSize() {
+    zoom = 125 * 11.875 / vinylPresetValues().recordSize;
+}
+
+let zoom;
+
+setZoomBasedOnSize();
 updateUnits();
 updatePressing();
 updateHTML();
 updateVinylPitchDescription();
 
 canvas.onwheel = (e) => {
-    zoom -= event.deltaY / 32;
+    let zoomFactor = 1.05;
+    if (Math.sign(event.deltaY) == -1)  zoom *= zoomFactor;
+    if (Math.sign(event.deltaY) == 1)   zoom /= zoomFactor;
+    if (zoom < 0) zoom = Number.EPSILON;
     updatePressing();
 };
 
@@ -508,23 +823,46 @@ window.onresize = (e) => {
 
 // Fill out HTML
 vinylPresetElement.oninput = () => {
+    let lastPresetValues = vinylPresetValues();
+
+    if (vinylPresetElement.value == "custom") {
+        unit.formatName            = "Name yr format d^∇^”)/";
+        unit.recordSize            = lastPresetValues.recordSize;
+        unit.holeSize              = lastPresetValues.holeSize;
+        unit.universal.rpm         = lastPresetValues.rpm;
+        unit.universal.bandStart   = lastPresetValues.bandStart;
+        unit.universal.bandEnd     = lastPresetValues.bandEnd;
+        unit.universal.labelSize   = lastPresetValues.labelSize;
+        unit.universal.insideStart = lastPresetValues.insideStart;
+    } else {
+        delete unit.formatName;
+        delete unit.recordSize;
+        delete unit.holeSize;
+        delete unit.universal.rpm;
+        delete unit.universal.bandStart;
+        delete unit.universal.bandEnd;
+        delete unit.universal.labelSize;
+        delete unit.universal.insideStart;
+    }
+
     unit.preset = vinylPresetElement.value;
     updatePressing();
+    updateHTML();
 };
 
 function updateVinylPitchDescription() {
     pressingHealthElement.innerText = "";
     pressingSoundsLikeElement.innerText = "";
 
-    if (unit.universal.groovePitch == 11037){
+    if (unit.universal.groovePitch == 11037) {
         pressingHealthElement.innerText = "IM LEON AND I LIKE BALLS";
         pressingSoundsLikeElement.href = "https://www.youtube.com/watch?v=KVcptglGlEY";
         pressingSoundsLikeElement.innerText = "you touched your balls";
-    } else if (unit.universal.groovePitch == 2009){
+    } else if (unit.universal.groovePitch == 2009) {
         pressingHealthElement.innerText = "Very panned sound quality";
         pressingSoundsLikeElement.href = "https://www.youtube.com/watch?v=bztiAcsATyI";
         pressingSoundsLikeElement.innerText = "they fucked up tbh";
-    } else if (unit.universal.groovePitch == 347){
+    } else if (unit.universal.groovePitch == 347) {
         pressingHealthElement.innerText = "Incredible sound quality";
         pressingSoundsLikeElement.href = "https://www.youtube.com/watch?v=iubgXSsc_jU";
         pressingSoundsLikeElement.innerText = "you need a break. Go take one.";
@@ -619,6 +957,58 @@ function updateVinylPitchDescription() {
     }
 }
 
+vinylRecordSizeElement.oninput = () => {
+    if (!isNaN(+vinylRecordSizeElement.innerText)) {
+        unit.recordSize = +vinylRecordSizeElement.innerText;
+        updatePressing();
+    }
+}
+
+vinylHoleSizeElement.oninput = () => {
+    if (!isNaN(+vinylHoleSizeElement.innerText)) {
+        unit.holeSize = +vinylHoleSizeElement.innerText;
+        updatePressing();
+    }
+}
+
+vinylRpmElement.oninput = () => {
+    unit.universal.rpm = vinylRpmElement.innerText;
+    updatePressing();
+}
+
+vinylFormatNameElement.oninput = () => {
+    unit.formatName = vinylFormatNameElement.innerText;
+    updatePressing();
+}
+
+vinylBandStartElement.oninput = () => {
+    if (!isNaN(+vinylBandStartElement.innerText)) {
+        unit.universal.bandStart = +vinylBandStartElement.innerText;
+        updatePressing();
+    }
+}
+
+vinylBandEndElement.oninput = () => {
+    if (!isNaN(+vinylBandEndElement.innerText)) {
+        unit.universal.bandEnd = +vinylBandEndElement.innerText;
+        updatePressing();
+    }
+}
+
+vinylLabelSizeElement.oninput = () => {
+    if (!isNaN(+vinylLabelSizeElement.innerText)) {
+        unit.universal.labelSize = +vinylLabelSizeElement.innerText;
+        updatePressing();
+    }
+}
+
+vinylInsideStartElement.oninput = () => {
+    if (!isNaN(+vinylInsideStartElement.innerText)) {
+        unit.universal.insideStart = vinylInsideStartElement.checked;
+        updatePressing();
+    }
+}
+
 vinylPitchElement.oninput = () => {
     if (!isNaN(+vinylPitchElement.innerText)) {
         unit.universal.groovePitch = +vinylPitchElement.innerText;
@@ -710,7 +1100,7 @@ function setUnit(unitNumber) {
     updateUnits();
     updatePressing();
     updateHTML();
-    updateVinylPitchDescription()
+    updateVinylPitchDescription();
 }
 
 addUnitElement.onclick = () => {
@@ -722,7 +1112,8 @@ addUnitElement.onclick = () => {
         universal: {
             labelColor: "#F07474",
             trackGap: 1,
-            groovePitch: 125
+            groovePitch: 125,
+            insideStart: false
         },
         sides: [{
             bands: []
@@ -734,8 +1125,12 @@ addUnitElement.onclick = () => {
     setUnit(pressing.units.length - 1);
 }
 
-document.getElementById("tracklist-side-one-add-track").onclick = (e) => {
-    unit.sides[0].bands.push({
+vinylGrooveColorsElement.onclick = () => {
+    updatePressing();
+}
+
+function addTrack(tracklist) {
+    tracklist.push({
         title: "Snookeroo",
         writer: "John-Taupin",
         time: 209
@@ -746,15 +1141,11 @@ document.getElementById("tracklist-side-one-add-track").onclick = (e) => {
     updateHTML();
 }
 
-document.getElementById("tracklist-side-two-add-track").onclick = (e) => {
-    unit.sides[1].bands.push({
-        title: "Snookeroo",
-        writer: "John-Taupin",
-        time: 209
-    });
+document.getElementById("tracklist-side-one-add-track").onclick = (e) => {
+    addTrack(unit.sides[0].bands);
+}
 
-    updateUnits();
-    updatePressing();
-    updateHTML();
+document.getElementById("tracklist-side-two-add-track").onclick = (e) => {
+    addTrack(unit.sides[1].bands);
 }
 
