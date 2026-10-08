@@ -854,7 +854,11 @@ function updateVinylPitchDescription() {
     pressingHealthElement.innerText = "";
     pressingSoundsLikeElement.innerText = "";
 
-    if (unit.universal.groovePitch == 11037) {
+    if (unit.universal.groovePitch == 1) {
+        pressingHealthElement.innerText = "but why";
+        pressingSoundsLikeElement.href = "https://www.youtube.com/watch?v=3pdZU7iYjxc";
+        pressingSoundsLikeElement.innerText = "absolute dogshit. sounds like the screams of the damned.";
+    } else if (unit.universal.groovePitch == 11037) {
         pressingHealthElement.innerText = "IM LEON AND I LIKE BALLS";
         pressingSoundsLikeElement.href = "https://www.youtube.com/watch?v=KVcptglGlEY";
         pressingSoundsLikeElement.innerText = "you touched your balls";
