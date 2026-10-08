@@ -1020,7 +1020,7 @@ vinylPitchElement.oninput = () => {
 
 vinylPitchElement.onblur = () => {
     // why 40? that's the stereo groove witch, muwhehehehehe!
-    if (unit.universal.groovePitch < 40) unit.universal.groovePitch = +recommendedPitchElement.innerText;
+    // if (unit.universal.groovePitch < 40) unit.universal.groovePitch = +recommendedPitchElement.innerText;
     vinylPitchElement.innerText = unit.universal.groovePitch;
     updatePressing();
     updateVinylPitchDescription();
@@ -1029,7 +1029,6 @@ vinylPitchElement.onblur = () => {
 vinylPitchElement.onkeydown = (e) => {
     if (e.key == "ArrowUp" || e.key == "ArrowDown" || e.key == "ArrowLeft" || e.key == "ArrowRight") {
         unit.universal.groovePitch += [1, -1][+(e.key == "ArrowDown" || e.key == "ArrowLeft")];
-        unit.universal.groovePitch = Math.max(unit.universal.groovePitch, 40);
         vinylPitchElement.innerText = unit.universal.groovePitch;
         updatePressing();
         updateVinylPitchDescription();
