@@ -572,7 +572,7 @@ function renderUnit() {
                     let bandColor = bandColors[(insideStart ? bandList.length - 1 - i : i) % bandColors.length];
 
                     ctx.beginPath();
-                    ctx.fillStyle = vinylGrooveColorsElement.checked ? bandColor : "rgba(0, 0, 0, 0.4)";
+                    ctx.fillStyle = vinylGrooveColorsElement.checked ? bandColor : darken(unit.vinylColor);
                     ctx.arc(canvas.width / 2 + offsetX * zoom, canvas.height / 2 + offsetY * zoom, Math.max(lathePosition * zoom, 0), 0, 2 * Math.PI);
                     ctx.fill();
 
@@ -784,12 +784,12 @@ function loadPressing() {
 
 function darken(color, amount) {
     color = parseInt(color.slice(1), 16);
-
+    let darken = 0.375;
     let [r, g, b] = [
         (color & 0xFF0000) >> 16,
         (color & 0xFF00) >> 8,
         color & 0xFF
-    ].map(x => (x * amount | 0).toString(16).padStart(2, 0));
+    ].map(x => (Math.max(((x - 255 * darken) / (1 - darken)) | 0, 0)).toString(16).padStart(2, 0));
 
     return "#" + r + g + b;
 }
