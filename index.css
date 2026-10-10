@@ -84,8 +84,13 @@ hr {
 	cursor: pointer;
 }
 
-.delete-row, .add-row, .edit-unit {
+.delete-row, .add-row, .edit-unit, .delete-all {
   user-select: none;
+	cursor: pointer;
+}
+
+.delete-all {
+  width: 18px;
 }
 
 .current-unit {
@@ -94,13 +99,14 @@ hr {
 }
 
 .tracklist {
-  border: 2px #d5e5fc solid;
-  margin: 10px;
+    border: 2px #d5e5fc solid;
+    margin: 10px;
+    width: 330px;
 }
 
 .tracklist caption {
   font-weight: bold;
-  font-size: 25px;
+  font-size: 20px;
 }
 
 .tracklist-body th {
@@ -121,3 +127,20 @@ hr {
 .collapse-all-but-first tr:not(:first-child) {
     visibility: collapse;
 }
+
+.section-title {
+  text-align: center;
+  font-size: 25px;
+  font-weight: bold;
+}
+
+.section-title-small {
+  text-align: center;
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.vinyl-collapse-table {
+	user-select: none;
+}
+

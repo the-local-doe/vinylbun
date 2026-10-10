@@ -3,6 +3,7 @@ let authorElement = document.getElementById("release-by");
 let pressElement = document.getElementById("pressing-by");
 let dateElement = document.getElementById("release-date");
 let commentElement = document.getElementById("comment");
+
 let vinylPresetElement = document.getElementById("vinyl-preset");
 let vinylTrackGapElement = document.getElementById("vinyl-track-gap");
 let vinylPitchElement = document.getElementById("vinyl-pitch");
@@ -17,7 +18,12 @@ let pressingHealthElement = document.getElementById("pressing-health");
 let pressingSoundsLikeElement = document.getElementById("pressing-sounds-like");
 let vinylVariablesElement = document.getElementById("vinyl-variables");
 let vinylGrooveColorsElement = document.getElementById("vinyl-groove-colors");
-
+let vinylMaxSideTimeElement = document.getElementById("vinyl-max-side-time");
+let vinylSideOneLeftoverElement = document.getElementById("vinyl-side-one-leftover");
+let vinylSideTwoLeftoverElement = document.getElementById("vinyl-side-two-leftover");
+let vinylHasNoLabelsElement = document.getElementById("vinyl-has-no-labels");
+let vinylSideOneDeleteAllElement = document.getElementById("vinyl-side-one-delete-all");
+let vinylSideTwoDeleteAllElement = document.getElementById("vinyl-side-two-delete-all");
 
 let vinylRecordSizeElement  = document.getElementById("vinyl-record-size");
 let vinylHoleSizeElement    = document.getElementById("vinyl-hole-size");
@@ -30,6 +36,14 @@ let vinylFormatNameElement  = document.getElementById("vinyl-format-name");
 
 const canvas = document.getElementById("pressing");
 const ctx = canvas.getContext("2d");
+
+for (let clickable of document.getElementsByClassName("vinyl-collapse-table")) {
+    let tbody = clickable.offsetParent.querySelector('tbody');
+    clickable.onclick = () => {
+        tbody.hidden = !tbody.hidden;
+        clickable.innerHTML = tbody.hidden ? ">" : "v";
+    }
+}
 
 let canvasScale = 2;
 canvas.width = canvas.clientWidth * canvasScale;
@@ -51,7 +65,8 @@ let defaultPressing = {
         "universal": {
             "labelColor": "#abdbf4",
             "trackGap": 1,
-            "groovePitch": 97
+            "groovePitch": 97,
+            "hasLabel": true
         },
         "sides": [{
                 "bands": [{
@@ -217,8 +232,8 @@ function updateTracklist(table, tracklist, id_template) {
             let tempTime = minutes * 60 + seconds;
             trackLengthTimeSpan.innerText = `${tempTime / 60 | 0}:${String(tempTime % 60).padStart(2, 0)}`;
 
-            updateUnits();
-            updatePressing();
+            updateUnitTables();
+            renderUnit();
         };
 
         trackLengthTimeSpan.contentEditable = "plaintext-only";
@@ -234,8 +249,8 @@ function updateTracklist(table, tracklist, id_template) {
                 unit.sides[side].bands.splice(track, 1);
             }
 
-            updateUnits();
-            updatePressing();
+            updateUnitTables();
+            renderUnit();
             updateHTML();
         };
 
@@ -260,6 +275,7 @@ function updateHTML() {
     vinylColorElement.innerText      = unit.vinylColor || "#999999";
     vinylPresetElement.value         = unit.preset || "12” 33rpm";
     vinylTrackGapElement.innerText   = unit.universal.trackGap == undefined ? 1 : unit.universal.trackGap;
+    vinylHasNoLabelsElement.checked  = unit.universal.hasNoLabel == undefined ? false : unit.universal.hasNoLabel;
     vinylLabelColorElement.innerText = unit.universal.labelColor || "#F07474";
 
     vinylRecordSizeElement.innerText = unit.recordSize;
@@ -430,6 +446,18 @@ function vinylPresetValues() {
             labelSize = 99;
             insideStart = true;
             break;
+        case "gigaton":
+            recordSize = 27.875;
+            holeSize = 0.286;
+
+            rpm = "33+1/3";
+
+            bandStart = 27.5;
+            bandEnd = 4.75;
+
+            labelSize = 99;
+            insideStart = false;
+            break;
         case "custom":
             recordSize = unit.recordSize;
             holeSize = unit.holeSize;
@@ -455,7 +483,7 @@ function vinylPresetValues() {
     }
 }
 
-function updatePressing() {
+function renderUnit() {
     // clear canvas
     ctx.reset();
 
@@ -477,6 +505,7 @@ function updatePressing() {
                 let groovePitch = unit.universal.groovePitch;
                 let labelColor  = unit.universal.labelColor;
                 let trackGap    = unit.universal.trackGap;
+                let hasNoLabel  = unit.universal.hasNoLabel;
 
                 // variables controlled by the preset
                 let recordPresetValues = vinylPresetValues();
@@ -517,8 +546,8 @@ function updatePressing() {
                 ctx.stroke();
 
                 // set-up start position for drawing
-                let lathePosition, bandList = currentSide.bands;
-                if (!insideStart) lathePosition = bandStart / 2;
+                let latheStartPosition, bandList = currentSide.bands;
+                if (!insideStart) latheStartPosition = bandStart / 2;
                 else {
                     // js canvas doesn't have layers, so in order to draw an inside-start record
                     // i effectively have to draw the album backwards, starting from the end
@@ -527,8 +556,10 @@ function updatePressing() {
 
                     for (let band of bandList) sideSize += band.time / 60 * rpm * groovePitch / 25400;
 
-                    lathePosition = bandEnd / 2 + sideSize;
+                    latheStartPosition = bandEnd / 2 + sideSize;
                 }
+
+                let lathePosition = latheStartPosition;
 
                 let bandColors = ["#c25c5c", "#c28f5c", "#c2c25c", "#5cc25c", "#5cc2c2", "#5c8fc2", "#5c5cc2", "#8f5cc2", "#c25cc2"];
 
@@ -569,15 +600,18 @@ function updatePressing() {
                     ctx.stroke();
                 }
 
-                // draw label
-                ctx.beginPath();
                 ctx.setLineDash([]);
-                ctx.lineWidth = 5;
-                ctx.fillStyle = labelColor;
-                ctx.strokeStyle = darken(labelColor, 0.8);
-                ctx.arc(canvas.width / 2 + offsetX * zoom, canvas.height / 2 + offsetY * zoom, Math.max(labelSize * zoom / 25.4 / 2, 0), 0, 2 * Math.PI);
-                ctx.fill();
-                ctx.stroke();
+
+                // draw label
+                if (!hasNoLabel) {
+                    ctx.beginPath();
+                    ctx.lineWidth = 5;
+                    ctx.fillStyle = labelColor;
+                    ctx.strokeStyle = darken(labelColor, 0.8);
+                    ctx.arc(canvas.width / 2 + offsetX * zoom, canvas.height / 2 + offsetY * zoom, Math.max(labelSize * zoom / 25.4 / 2, 0), 0, 2 * Math.PI);
+                    ctx.fill();
+                    ctx.stroke();
+                }
 
                 // draw hole in label (may complicate pressings with no label, that's future me's problem)
                 ctx.beginPath();
@@ -600,17 +634,45 @@ function updatePressing() {
                 let sideMinutes = currentTime / 60 | 0;
                 let sideSeconds = (currentTime % 60 + "").padStart(2, 0);
 
-                if (sideNumber == 0) vinylSideOneLengthElement.innerText = `${sideMinutes}:${sideSeconds}`;
-                if (sideNumber == 1) {
+                let currentTimeElement;
+
+                if (sideNumber == 0) {
+                    vinylSideOneLengthElement.innerText = `${sideMinutes}:${sideSeconds}`;
+                    currentTimeElement = vinylSideOneLeftoverElement;
+                    console.log(bandStart / 2, bandEnd / 2, latheStartPosition + trackGap / 25.4)
+                } else {
                     vinylSideTwoLengthElement.innerText = `${sideMinutes}:${sideSeconds}`;
-                    console.log(formatTime((bandStart / 2 - bandEnd / 2) / (groovePitch * rpm) * 25400 * 60));
+                    currentTimeElement = vinylSideTwoLeftoverElement;
                 }
+
+                let deadTime, deadTimeNoGap, overTime;
+
+                // incredible! i have no clue how this works, but it does so im not complaining
+                if (insideStart) {
+                    deadTime      = (bandStart / 2 - latheStartPosition - trackGap / 25.4) / (groovePitch * rpm) * 25400 * 60;
+                    deadTimeNoGap = (bandStart / 2 - latheStartPosition) / (groovePitch * rpm) * 25400 * 60;
+                    overTime      = (latheStartPosition - bandStart / 2) / (groovePitch * rpm) * 25400 * 60 + 1;
+                } else {
+                    deadTime      = (lathePosition - bandEnd / 2) / (groovePitch * rpm) * 25400 * 60;
+                    deadTimeNoGap = (lathePosition - bandEnd / 2 + trackGap / 25.4) / (groovePitch * rpm) * 25400 * 60;
+                    overTime      = (bandEnd / 2 - lathePosition - trackGap / 25.4) / (groovePitch * rpm) * 25400 * 60 + 1;
+                }
+
+                if (bandList.length == 0) {
+                    currentTimeElement.innerText = `Dead time: ${formatTime(deadTime)}\nAdd a song with the + button :D`;
+                } else if (deadTimeNoGap < 1 && deadTimeNoGap > 0) {
+                    currentTimeElement.innerText = `Side is full! Yummy! \\(^∇^)/`;
+                } else if (deadTime < 0 && deadTimeNoGap > 0) {
+                    currentTimeElement.innerText = `Dead time: ${formatTime(deadTimeNoGap)}\nNew song can't be added!`;
+                } else if (deadTime < 0 && deadTimeNoGap < 0) {
+                    currentTimeElement.innerText = `Over time: ${formatTime(overTime)}\nSide can't be played! Reduce time or pitch!! (”°~°)`;
+                } else currentTimeElement.innerText = `Dead time w/ new song: ${formatTime(deadTime)}\nDead time no new song: ${formatTime(deadTimeNoGap)}`;
+                vinylMaxSideTimeElement.innerText = formatTime((bandStart / 2 - bandEnd / 2) / (groovePitch * rpm) * 25400 * 60);
             }
 
             recommendedPitchElement.innerText = lowestPitch | 0;
             break;
     }
-
 
     compressPressing();
 }
@@ -635,7 +697,6 @@ function loadPressing() {
         //     all previous standards recalculated
         if (pressing.version == 0) {
             for (let unit of pressing.units) {
-                console.log(unit.preset);
                 switch (unit.preset) {
                     case "12” 33rpm":
                         unit.formatName = "12” 33RPM (version 0)";
@@ -714,7 +775,8 @@ function loadPressing() {
 
             pressing.version = 1;
         }
-    } catch {
+    } catch (e) {
+        console.log(e);
         pressing = defaultPressing;
         compressPressing();
     }
@@ -732,7 +794,7 @@ function darken(color, amount) {
     return "#" + r + g + b;
 }
 
-function updateUnits() {
+function updateUnitTables() {
     unitsListElement.innerHTML = "";
 
     for (let i = 0; i < pressing.units.length; i++) {
@@ -785,40 +847,23 @@ function updateUnits() {
     }
 }
 
-
-let pressing = null;
-vinylGrooveColorsElement.checked = false;
-
-loadPressing();
-
-let currentUnit = 0;
-let unit = pressing.units[0];
-
 function setZoomBasedOnSize() {
-    zoom = 125 * 11.875 / vinylPresetValues().recordSize;
+    zoom = 128 * 11.875 / vinylPresetValues().recordSize;
 }
-
-let zoom;
-
-setZoomBasedOnSize();
-updateUnits();
-updatePressing();
-updateHTML();
-updateVinylPitchDescription();
 
 canvas.onwheel = (e) => {
     let zoomFactor = 1.05;
     if (Math.sign(event.deltaY) == -1)  zoom *= zoomFactor;
     if (Math.sign(event.deltaY) == 1)   zoom /= zoomFactor;
     if (zoom < 0) zoom = Number.EPSILON;
-    updatePressing();
+    renderUnit();
 };
 
 window.onresize = (e) => {
     // re-do zoom?
     canvas.width = canvas.clientWidth * canvasScale;
     canvas.height = canvas.clientHeight * canvasScale;
-    updatePressing();
+    renderUnit();
 };
 
 // Fill out HTML
@@ -846,7 +891,7 @@ vinylPresetElement.oninput = () => {
     }
 
     unit.preset = vinylPresetElement.value;
-    updatePressing();
+    renderUnit();
     updateHTML();
 };
 
@@ -964,59 +1009,59 @@ function updateVinylPitchDescription() {
 vinylRecordSizeElement.oninput = () => {
     if (!isNaN(+vinylRecordSizeElement.innerText)) {
         unit.recordSize = +vinylRecordSizeElement.innerText;
-        updatePressing();
+        renderUnit();
     }
 }
 
 vinylHoleSizeElement.oninput = () => {
     if (!isNaN(+vinylHoleSizeElement.innerText)) {
         unit.holeSize = +vinylHoleSizeElement.innerText;
-        updatePressing();
+        renderUnit();
     }
 }
 
 vinylRpmElement.oninput = () => {
     unit.universal.rpm = vinylRpmElement.innerText;
-    updatePressing();
+    renderUnit();
 }
 
 vinylFormatNameElement.oninput = () => {
     unit.formatName = vinylFormatNameElement.innerText;
-    updatePressing();
+    renderUnit();
 }
 
 vinylBandStartElement.oninput = () => {
     if (!isNaN(+vinylBandStartElement.innerText)) {
         unit.universal.bandStart = +vinylBandStartElement.innerText;
-        updatePressing();
+        renderUnit();
     }
 }
 
 vinylBandEndElement.oninput = () => {
     if (!isNaN(+vinylBandEndElement.innerText)) {
         unit.universal.bandEnd = +vinylBandEndElement.innerText;
-        updatePressing();
+        renderUnit();
     }
 }
 
 vinylLabelSizeElement.oninput = () => {
     if (!isNaN(+vinylLabelSizeElement.innerText)) {
         unit.universal.labelSize = +vinylLabelSizeElement.innerText;
-        updatePressing();
+        renderUnit();
     }
 }
 
 vinylInsideStartElement.oninput = () => {
     if (!isNaN(+vinylInsideStartElement.innerText)) {
         unit.universal.insideStart = vinylInsideStartElement.checked;
-        updatePressing();
+        renderUnit();
     }
 }
 
 vinylPitchElement.oninput = () => {
     if (!isNaN(+vinylPitchElement.innerText)) {
         unit.universal.groovePitch = +vinylPitchElement.innerText;
-        updatePressing();
+        renderUnit();
     }
 
     updateVinylPitchDescription();
@@ -1026,7 +1071,7 @@ vinylPitchElement.onblur = () => {
     // why 40? that's the stereo groove witch, muwhehehehehe!
     // if (unit.universal.groovePitch < 40) unit.universal.groovePitch = +recommendedPitchElement.innerText;
     vinylPitchElement.innerText = unit.universal.groovePitch;
-    updatePressing();
+    renderUnit();
     updateVinylPitchDescription();
 };
 
@@ -1034,7 +1079,7 @@ vinylPitchElement.onkeydown = (e) => {
     if (e.key == "ArrowUp" || e.key == "ArrowDown" || e.key == "ArrowLeft" || e.key == "ArrowRight") {
         unit.universal.groovePitch += [1, -1][+(e.key == "ArrowDown" || e.key == "ArrowLeft")];
         vinylPitchElement.innerText = unit.universal.groovePitch;
-        updatePressing();
+        renderUnit();
         updateVinylPitchDescription();
     }
 };
@@ -1042,14 +1087,14 @@ vinylPitchElement.onkeydown = (e) => {
 vinylTrackGapElement.oninput = () => {
     if (!isNaN(+vinylTrackGapElement.innerText)) {
         unit.universal.trackGap = +vinylTrackGapElement.innerText;
-        updatePressing();
+        renderUnit();
     }
 };
 
 vinylTrackGapElement.onblur = () => {
     if (unit.universal.trackGap < 0) unit.universal.trackGap = 1;
     vinylTrackGapElement.innerText = unit.universal.trackGap;
-    updatePressing();
+    renderUnit();
 };
 
 vinylTrackGapElement.onkeydown = (e) => {
@@ -1057,51 +1102,51 @@ vinylTrackGapElement.onkeydown = (e) => {
         unit.universal.trackGap += [0.01, -0.01][+(e.key == "ArrowDown" || e.key == "ArrowLeft")];
         unit.universal.trackGap = Math.max(Math.round(unit.universal.trackGap * 100) / 100, 0);
         vinylTrackGapElement.innerText = unit.universal.trackGap;
-        updatePressing();
+        renderUnit();
     }
 };
 
 vinylColorElement.oninput = () => {
     unit.vinylColor = vinylColorElement.innerText;
-    updatePressing();
+    renderUnit();
 };
 
 vinylLabelColorElement.oninput = () => {
     unit.universal.labelColor = vinylLabelColorElement.innerText;
-    updatePressing();
+    renderUnit();
 };
 
 commentElement.oninput = () => {
     pressing.comment = commentElement.value;
-    updatePressing();
+    renderUnit();
 };
 
 titleElement.onblur = () => {
     pressing.releaseTitle = titleElement.innerText;
-    updatePressing();
+    renderUnit();
 };
 
 authorElement.onblur = () => {
     pressing.releaseBy = authorElement.innerText;
-    updatePressing();
+    renderUnit();
 };
 
 pressElement.onblur = () => {
     pressing.pressingBy = pressElement.innerText;
-    updatePressing();
+    renderUnit();
 };
 
 dateElement.onblur = () => {
     pressing.releaseDate = dateElement.innerText;
-    updatePressing();
+    renderUnit();
 };
 
 function setUnit(unitNumber) {
     currentUnit = unitNumber;
     unit = pressing.units[unitNumber];
 
-    updateUnits();
-    updatePressing();
+    updateUnitTables();
+    renderUnit();
     updateHTML();
     updateVinylPitchDescription();
 }
@@ -1129,7 +1174,24 @@ addUnitElement.onclick = () => {
 }
 
 vinylGrooveColorsElement.onclick = () => {
-    updatePressing();
+    renderUnit();
+}
+
+vinylHasNoLabelsElement.onclick = () => {
+    unit.universal.hasNoLabel = vinylHasNoLabelsElement.checked;
+    renderUnit();
+}
+
+vinylSideOneDeleteAllElement.onclick = () => {
+    unit.sides[0].bands = [];
+    renderUnit();
+    updateHTML();
+}
+
+vinylSideTwoDeleteAllElement.onclick = () => {
+    unit.sides[1].bands = [];
+    renderUnit();
+    updateHTML();
 }
 
 function addTrack(tracklist) {
@@ -1139,8 +1201,8 @@ function addTrack(tracklist) {
         time: 209
     });
 
-    updateUnits();
-    updatePressing();
+    updateUnitTables();
+    renderUnit();
     updateHTML();
 }
 
@@ -1152,3 +1214,18 @@ document.getElementById("tracklist-side-two-add-track").onclick = (e) => {
     addTrack(unit.sides[1].bands);
 }
 
+
+let pressing = null;
+vinylGrooveColorsElement.checked = false;
+
+loadPressing();
+
+let currentUnit = 0;
+let unit = pressing.units[0];
+let zoom;
+
+setZoomBasedOnSize();
+updateUnitTables();
+renderUnit();
+updateHTML();
+updateVinylPitchDescription();

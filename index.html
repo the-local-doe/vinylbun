@@ -19,7 +19,7 @@
 
         <hr>
 
-        <div>Pressing Comments</div>
+        <div class="section-title-small">Pressing Comments</div>
         <textarea id="comment" rows="4"></textarea>
 
         <hr>
@@ -42,8 +42,8 @@
         <table class="tracklist">
             <caption>Format Variables</caption>
             <thead>
-                <th>Variable</th>
-                <th scope="col" width="100%">Value</th>
+                <th class="vinyl-collapse-table" width="25%">v</th>
+                <th scope="col" width="75%">Value</th>
             </thead>
             <tbody class="tracklist-body collapse-all-but-first" id="vinyl-variables">
                 <tr>
@@ -70,6 +70,9 @@
                             <option value="10” 45rpm">10” 45 RPM (Single / EP)</option>
                             <option value="trimicron">33ᐪ Triple Durée (Trimicron)</option>
                             <option value="seeburg">Seeburg 1000</option>
+                            <hr>
+                            <option disabled selected>&emsp;BSA Custom Options</option>
+                            <option value="gigaton">28” Gigaton LP (doe)</option>
                         </select>
                     </th>
                 </tr>
@@ -129,8 +132,8 @@
         <table class="tracklist">
             <caption>Global Variables</caption>
             <thead>
-                <th>Variable</th>
-                <th scope="col" width="100%">Value</th>
+                <th class="vinyl-collapse-table" width="25%">v</th>
+                <th scope="col" width="75%">Value</th>
             </thead>
             <tbody class="tracklist-body">
                 <tr>
@@ -138,6 +141,7 @@
                     <th>
                         <span spellcheck="false" contenteditable="plaintext-only" class="editable" id="vinyl-pitch">95</span> µm <span class="table-small-text">(Recommended: <span id="recommended-pitch">95</span> µm)</span>
                         <div class="table-small-text">Pitch can't go below 40 µm</div>
+                        <div class="table-small-text">Max side time is <span id="vinyl-max-side-time"></span></div>
                         <hr style="border-color: #FF1053;">
                         <div class="table-small-text" id="pressing-health">Standard quality</div>
                         <div class="table-small-text">Sounds like <a target="_blank" id="pressing-sounds-like"></a></div>
@@ -155,6 +159,10 @@
                     <th spellcheck="false" contenteditable="plaintext-only" class="editable" id="vinyl-color">#999999</th>
                 </tr>
                 <tr>
+                    <th>Has No Labels</th>
+                    <th><input type="checkbox" id="vinyl-has-no-labels"></input></th>
+                </tr>
+                <tr>
                     <th>Label Color</th>
                     <th spellcheck="false" contenteditable="plaintext-only" class="editable" id="vinyl-label-color">#999999</th>
                 </tr>
@@ -167,11 +175,17 @@
 
         <hr>
 
+        <div class="section-title">Side One</div>
+
         <table class="tracklist">
-            <caption>Side One [<span id="tracklist-side-one-length"></span>]</caption>
+            <caption>
+                <div>Tracklist [<span id="tracklist-side-one-length"></span>]</div>
+                <div class="table-small-text" id="vinyl-side-one-leftover"></div>
+            </caption>
             <thead>
                 <tr>
-                    <td colspan="4" id="tracklist-side-one-add-track" class="add-row">+</td>
+                    <td colspan="3" id="tracklist-side-one-add-track" class="add-row">+</td>
+                    <td id="vinyl-side-one-delete-all" class="delete-all">x</td>
                 </tr>
                 <th>No.</th>
                 <th scope="col" width="100%">
@@ -186,12 +200,17 @@
         </table>
 
         <hr>
+        <div class="section-title">Side Two</div>
 
         <table class="tracklist">
-            <caption>Side Two [<span id="tracklist-side-two-length"></span>]</caption>
+            <caption>
+                <div>Tracklist [<span id="tracklist-side-two-length"></span>]</div>                
+                <div class="table-small-text" id="vinyl-side-two-leftover"></div>
+            </caption>
             <thead>
                 <tr>
-                    <td colspan="4" id="tracklist-side-two-add-track" class="add-row">+</td>
+                    <td colspan="3" id="tracklist-side-two-add-track" class="add-row">+</td>
+                    <td id="vinyl-side-two-delete-all" class="delete-all">x</td>
                 </tr>
                 <th>No.</th>
                 <th scope="col" width="100%">
