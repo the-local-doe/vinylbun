@@ -663,7 +663,7 @@ function renderUnit() {
                 } else if (deadTimeNoGap < 1 && deadTimeNoGap > 0) {
                     currentTimeElement.innerText = `Side is full! Yummy! \\(^∇^)/`;
                 } else if (deadTime < 0 && deadTimeNoGap > 0) {
-                    currentTimeElement.innerText = `Dead time: ${formatTime(deadTimeNoGap)}\nNew song can't be added!`;
+                    currentTimeElement.innerText = `Dead time: ${formatTime(deadTimeNoGap)}\nNew song can't be added! Lower pitch to add room!`;
                 } else if (deadTime < 0 && deadTimeNoGap < 0) {
                     currentTimeElement.innerText = `Over time: ${formatTime(overTime)}\nSide can't be played! Reduce time or pitch!! (”°~°)`;
                 } else currentTimeElement.innerText = `Dead time w/ new song: ${formatTime(deadTime)}\nDead time no new song: ${formatTime(deadTimeNoGap)}`;
