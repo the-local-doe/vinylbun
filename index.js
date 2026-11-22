@@ -784,12 +784,27 @@ function loadPressing() {
 
 function darken(color, amount) {
     color = parseInt(color.slice(1), 16);
-    let darken = 0.375;
     let [r, g, b] = [
         (color & 0xFF0000) >> 16,
         (color & 0xFF00) >> 8,
         color & 0xFF
-    ].map(x => (Math.max(((x - 255 * darken) / (1 - darken)) | 0, 0)).toString(16).padStart(2, 0));
+    ];
+        let brightLimit = 0xcc;
+        let darkLimit   = 0x60;
+
+    if ((r > brightLimit) + (g > brightLimit) + (b > brightLimit) > 1) {
+      r = Math.round(r * 0.625).toString(16).padStart(2, 0);
+      g = Math.round(g * 0.625).toString(16).padStart(2, 0);
+      b = Math.round(b * 0.625).toString(16).padStart(2, 0);
+    } else if (r < darkLimit || g < darkLimit || b < darkLimit) {
+      r = Math.round((r + 153) / 1.6).toString(16).padStart(2, 0);
+      g = Math.round((g + 153) / 1.6).toString(16).padStart(2, 0);
+      b = Math.round((b + 153) / 1.6).toString(16).padStart(2, 0);
+    } else {
+      r = Math.round(r * 1.6 - 153).toString(16).padStart(2, 0);
+      g = Math.round(g * 1.6 - 153).toString(16).padStart(2, 0);
+      b = Math.round(b * 1.6 - 153).toString(16).padStart(2, 0);
+    }
 
     return "#" + r + g + b;
 }
